@@ -31,6 +31,7 @@
 <body>
     <h1>Información de Persona</h1>
     <div>
+        
         <p><strong>Nombre:</strong> <%= nombre %></p>
         <p><strong>Apellidos:</strong> <%= apellidos %></p>
         <p><strong>DNI:</strong> <%= dni %></p>
