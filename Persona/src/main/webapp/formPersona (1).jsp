@@ -46,7 +46,7 @@
                 <label for="localidad" class="labelPersona">Localidad</label>
                 <input id="localidad" name="localidad" type="text" maxlength="100" size="70"/>
                 <br /><br />
-                <label for="municipio" class="labelPersona">Municipio</label>
+                <label for="municipio" class="labelPersona">Municipio</label>-
                 <input id="municipio" name="municipio" type="text" maxlength="50" size="50"/>
                 <br /><br />
                 <label for="provincia" class="labelPersona">Provincia</label>
