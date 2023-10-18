@@ -58,14 +58,14 @@
                 <br /><br />
                 <fieldset style="border: 1px solid grey; width: 22rem;">
                 <legend>Sexo *</legend>
-                    <input id="sexoM" name="sexo" type="radio" value="masculino" checked/>
+                    <input id="sexoM" name="sexo" type="radio" value="Masculino" checked/>
                     <label for="sexoM">Masculino</label>
                     <br />
-                    <input id="sexoF" name="sexo" type="radio" value="femenino"/>
+                    <input id="sexoF" name="sexo" type="radio" value="Femenino"/>
                     <label for="sexoF">Femenino</label>
                     <br>
-                    <input id="sexoO" name="sexo" type="radio" value="otro"/>
-                    <label for="sexoO">Prefiero no decirno</label>
+                    <input id="sexoO" name="sexo" type="radio" value="Prefiero no decirlo"/>
+                    <label for="sexoO">Prefiero no decirlo</label>
                 </fieldset>
                 <br /><br />
                 <label for="fecha-nac" class="labelPersona">Fecha de nacimiento</label>
