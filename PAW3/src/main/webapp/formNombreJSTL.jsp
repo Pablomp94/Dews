@@ -1,7 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <%
-    String NOMBRE_XDEFECTO = "desconocido";   
+    String NOMBRE_XDEFECTO = "desconocido"; 
     String nombre = NOMBRE_XDEFECTO;
     
     // true si existe el parametro nombre
@@ -38,10 +40,21 @@
         </div>
         <%}%>
 
+        <%--
         <%if (nombre.equalsIgnoreCase("Paco")){%>
             <h1>Cuanto tiempo <%=nombre%></h1>
         <%}%>
+        --%>
+       
 
+        <c:choose>
+            <c:when test="${param.nombre =="Pedro"}"/>
+                <h1>¡Hombre, <%=nombre%>, cuánto tiempo sin verte!</h1>
+            </c:when>
+            <c:otherwise>
+                <h1>Hola <c:out value="${param.nombre}" defalult="desconocido"/></h1>
+            </c:otherwise>
+        </c:choose>    
 
 
     </body>
