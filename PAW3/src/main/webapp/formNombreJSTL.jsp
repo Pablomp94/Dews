@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <%
     String NOMBRE_XDEFECTO = "desconocido"; 
@@ -55,7 +55,6 @@
                 <h1>Hola <c:out value="${param.nombre}" defalult="desconocido"/></h1>
             </c:otherwise>
         </c:choose>    
-
 
     </body>
 </html>
