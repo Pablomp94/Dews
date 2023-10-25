@@ -1,27 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="jakarta.tags.core" %>
-<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="nombreDesconocido" value="desconocido"/>  
 <c:set var="nombreComparar" value="Pedro"/>     
 
-<%
-    String NOMBRE_XDEFECTO = "desconocido"; 
-    String nombre = NOMBRE_XDEFECTO;
-    
-    // true si existe el parametro nombre
-    Boolean existeParamNombre = false;
-    
-    String nombreParam = request.getParameter("nombre");
-    if (nombreParam != null && !nombreParam.isBlank()) {
-        nombre = nombreParam;
-        existeParamNombre = true;        
-    }
-%>
+<c:set var="NOMBRE_XDEFECTO" value="desconocido"/> 
+<c:set var="nombre" value="${NOMBRE_XDEFECTO}"/> 
 
-
-
-
+<c:choose>
+    <c:when test="${not empty param.nombre}">
+        <c:set var="nombre" value="${param.nombre}"/>
+    </c:when>
+</c:choose>
 
 <!DOCTYPE html>
 <html>
@@ -31,39 +22,36 @@
     </head>
     <body>
 
-        <c:if test="${param.nombre == null || empty param.nombre}">
+        <c:if test="${empty param.nombre}">
             <div>
                 <form method="get" action="formNombreJSTL.jsp">
                     <label class="id" for="idioma">Idioma</label>
-                    <select class="id" id="idioma" name="Idioma:">
-                        <option value="texto.jsp?locale=es">Español</option>
-                        <option value="texto.jsp?locale=en">English</option>
+                    <select class="id" id="idioma" name="locale">
+                        <option value="es">Español</option>
+                        <option value="en">English</option>
                     </select>
 
                     </br> 
 
                     <label for="nombre" style="margin-right: 1rem;">Pon aquí tu nombre</label>
                     <input id="nombre" name="nombre" type="text" maxlength="50" 
-                           placeholder="introduce tu nombre" required="true"/>
+                           placeholder="introduce tu nombre" required/>
                     <input type="submit">
                 </form>
             </div>
         </c:if>
 
+        <!-- Set the locale for fmt -->
+        <fmt:setLocale value="${param.locale}" scope="session"/>
+        
         <c:choose>
             <c:when test="${param.nombre == nombreComparar}">
-                <h1>¡Hombre <c:out value="${param.nombre}"/>, cuánto tiempo sin verte!</h1>
-                
+                <!-- Use fmt:message to get the greeting message from the properties file -->
+                <h1><fmt:message key='hola'/> ${param.nombre}, cuánto tiempo sin verte!</h1>                
             </c:when>
-            <c:otherwise>
-                <c:if test="${param.locale!=null}">
-                    <h1><fmt:setLocale value="${hola.locale}"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
-                </c:if>
-                <!--<h1>Hola <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1> -->
-                        
-                <c:if test="${param.locale==en}">
-                    <h1><fmt:setLocale value="${hola.en}"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
-                </c:if>
+            <c:otherwise>                
+                <!-- Use fmt:message to get the greeting message from the properties file -->
+                <h1><fmt:message key='hola'/> ${param.nombre}</h1>                        
             </c:otherwise>
         </c:choose> 
     </body>
