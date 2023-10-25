@@ -57,9 +57,13 @@
             </c:when>
             <c:otherwise>
                 <c:if test="${param.locale!=null}">
-                    <h1><fmt:setLocale value="${param.locale}" scope="session"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
+                    <h1><fmt:setLocale value="${hola.locale}"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
                 </c:if>
                 <!--<h1>Hola <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1> -->
+                        
+                <c:if test="${param.locale==en}">
+                    <h1><fmt:setLocale value="${hola.en}"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
+                </c:if>
             </c:otherwise>
         </c:choose> 
     </body>
