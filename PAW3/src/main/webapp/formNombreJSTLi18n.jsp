@@ -21,6 +21,8 @@
         <title>Formulario - Nombre</title>
     </head>
     <body>
+        
+       
 
         <c:if test="${empty param.nombre}">
             <div>
@@ -41,18 +43,24 @@
             </div>
         </c:if>
 
+        
+        
+        
         <!-- Set the locale for fmt -->
         <fmt:setLocale value="${param.locale}" scope="session"/>
-        
+     
         <c:choose>
+            
+            
             <c:when test="${param.nombre == nombreComparar}">
-                <!-- Use fmt:message to get the greeting message from the properties file -->
-                <h1><fmt:message key='hola'/> ${param.nombre}, cuánto tiempo sin verte!</h1>                
+                <h1>¡Hombre <c:out value="${param.nombre}"/>, cuánto tiempo sin verte!</h1>
             </c:when>
-            <c:otherwise>                
-                <!-- Use fmt:message to get the greeting message from the properties file -->
-                <h1><fmt:message key='hola'/> ${param.nombre}</h1>                        
-            </c:otherwise>
+            
+            <c:when test="${(param.nombre != null && param.nombre != nombreComparar)}">
+                <h1>Hola <c:out value="${param.nombre}"/></h1>
+            </c:when>
+            
+           
         </c:choose> 
     </body>
 </html>
