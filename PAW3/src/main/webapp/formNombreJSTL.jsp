@@ -1,27 +1,12 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="jakarta.tags.core" %>
-<%@taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<c:set var="nombreDesconocido" value="desconocido"/>  
-<c:set var="nombreComparar" value="Pedro"/>     
-
-<%
-    String NOMBRE_XDEFECTO = "desconocido"; 
-    String nombre = NOMBRE_XDEFECTO;
-    
-    // true si existe el parametro nombre
-    Boolean existeParamNombre = false;
-    
-    String nombreParam = request.getParameter("nombre");
-    if (nombreParam != null && !nombreParam.isBlank()) {
-        nombre = nombreParam;
-        existeParamNombre = true;        
-    }
-%>
-
-
-
-
+<%-- 
+ Es aconsejable tener parametrizados los datos que se utilizan como costantes, 
+ o al menos bien identificados en el código. */
+--%>
+<c:set var="nombreConocido" value="Pedro"/>
+<c:set var="nombreDesconocido" value="desconocido"/>
 
 <!DOCTYPE html>
 <html>
@@ -30,37 +15,27 @@
         <title>Formulario - Nombre</title>
     </head>
     <body>
-
-        <c:if test="${param.nombre == null || empty param.nombre}">
-            <div>
-                <form method="get" action="formNombreJSTL.jsp">
-                    <label class="id" for="idioma">Idioma</label>
-                    <select class="id" id="idioma" name="Idioma:">
-                        <option value="texto.jsp?locale=es">Español</option>
-                        <option value="texto.jsp?locale=en">English</option>
-                    </select>
-
-                    </br> 
-
-                    <label for="nombre" style="margin-right: 1rem;">Pon aquí tu nombre</label>
-                    <input id="nombre" name="nombre" type="text" maxlength="50" 
-                           placeholder="introduce tu nombre" required="true"/>
-                    <input type="submit">
-                </form>
-            </div>
-        </c:if>
-
-        <c:choose>
-            <c:when test="${param.nombre == nombreComparar}">
-                <h1>¡Hombre <c:out value="${param.nombre}"/>, cuánto tiempo sin verte!</h1>
-                
-            </c:when>
-            <c:otherwise>
-                <c:if test="${param.locale!=null}">
-                    <h1><fmt:setLocale value="${param.locale}" scope="session"/> <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1>
-                </c:if>
-                <!--<h1>Hola <c:out value="${param.nombre}" default="${nombreDesconocido}"/></h1> -->
-            </c:otherwise>
-        </c:choose> 
+      <%-- Equivalente a un if-else para tratar cuando el parámetro nombre llega con el valor buscado --%>
+      <%-- Se puede hacer un if-else en linea usando ?. En el segundo c:out se muestra un ejemplo --%>
+      <c:choose>
+        <c:when test="${param.nombre eq nombreConocido}">
+        <h1>¡Hombre <c:out value="${param.nombre}"/>, cuánto tiempo sin verte!</h1>
+        </c:when>
+        <c:otherwise>
+        <h1>Hola <c:out value="${empty param.nombre ? nombreDesconocido : param.nombre}" default="${nombreDesconocido}}"/></h1>
+        </c:otherwise>
+      </c:choose>
+             
+      <%-- si el parámetro "nombre" no llega o llega vacío mantenemos el formulario --%>
+      <c:if test="${param.nombre == null || empty param.nombre}">
+        <div>
+            <form method="get" action="formNombreJSTL.jsp">
+                <label for="nombre" style="margin-right: 1rem;">Pon aquí tu nombre</label>
+                <input id="nombre" name="nombre" type="text" maxlength="50" 
+                       placeholder="introduce tu nombre" required="true"/>
+                <input type="submit">
+            </form>
+        </div>
+      </c:if>
     </body>
 </html>
