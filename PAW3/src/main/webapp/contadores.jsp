@@ -33,6 +33,14 @@
                 <input hidden="true" id="contadorRequest" name="incrementa" value="request">
                 <input type="submit" value="Incrementa Request">
             </form>                
+            <form method="get" action="contador">
+                <input hidden="true" id="cerrarSesion" name="incrementa" value="cerrar">                
+                <input type="submit" value="Cerrar Session">
+            </form>
+            <form method="get" action="contador">
+                <input hidden="true" id="reiniciarTodo" name="incrementa" value="reiniciar">                
+                <input type="submit" value="Reiniciar Todo">
+            </form>
         </div>
     </body>
 </html>
