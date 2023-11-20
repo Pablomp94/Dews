@@ -9,6 +9,8 @@
     font-weight: 600;    
 }
 </style>
+
+
 <c:set var="provincias" value="${['Alava','Albacete','Alicante','Almería','Asturias','Avila','Badajoz','Barcelona','Burgos','Cáceres',
                                  'Cádiz','Cantabria','Castellón','Ciudad Real','Córdoba','La Coruña','Cuenca','Gerona','Granada','Guadalajara',
                                  'Guipúzcoa','Huelva','Huesca','Islas Baleares','Jaén','León','Lérida','Lugo','Madrid','Málaga','Murcia','Navarra',
@@ -19,12 +21,12 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Formulario - Persona</title>
+        <title>Formulario - Usuario</title>
     </head>
     <body>
         <h1>Formulario de alta</h1>
         <div>
-            <form method="post" action="persona">
+            <form method="post" action="usuario">
                 <label for="nombre" class="labelPersona">Nombre *</label>
                 <input id="nombre" name="nombre" type="text" maxlength="100" size="50" required/>
                 <br /><br />
