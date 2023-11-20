@@ -103,7 +103,7 @@ public class ServletIncContador extends HttpServlet {
                         
                     }catch (Exception ex) {}
                     break;
-                case "Reiniciar":
+                case "reiniciar":
                   try{
                         request.getSession().invalidate();
                         request.getSession().setAttribute("contadorSession", new AtomicInteger(0));
@@ -113,7 +113,6 @@ public class ServletIncContador extends HttpServlet {
                         
                         request.removeAttribute("contadorRequest");
                         request.setAttribute("contadorRequest", new AtomicInteger(0));
-                        
                         
                     }catch (Exception ex) {}
                     break;
