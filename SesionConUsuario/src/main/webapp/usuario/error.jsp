@@ -1,4 +1,4 @@
-<%@ page contentType="text/html" pageEncoding="UTF-8" isErrorPage="true"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
@@ -9,8 +9,6 @@
     </head>
     <body>
         <p>Se ha producido un error:<br />
-            <c:out value="${error}"/>
-        ${exception.message}</p>
-        
+            <c:out value="${error}"/></p>
     </body>
 </html>
