@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package es.albares.dwes.paw3;
+package es.albares.dwes.paw3.servicios;
 
 import es.albares.dwes.paw3.entidades.Persona;
 import java.text.SimpleDateFormat;
@@ -11,10 +7,11 @@ import java.util.Arrays;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
-class UsuarioServices {
-     public usuario creaUsuario(String nombre, String apellidos, String dni, 
+public class PersonaServices {
+    
+    public Persona creaPersona(String nombre, String apellidos, String dni, 
             String domicilio, String localidad, String municipio, String codigoPostal, String provincia, 
             String sexo, String[] aficiones, String fechaNacimiento) throws Exception {
         
@@ -23,42 +20,42 @@ class UsuarioServices {
         // realizamos las comprobaciones de los datos que se recuperan
         // primero los obligatorios
         if (nombre != null && !nombre.isBlank()) {
-            usuario.setNombre(nombre);
+            persona.setNombre(nombre);
         } else {
             throw new Exception("Nombre es obligatorio");
         }
         if (apellidos != null && !apellidos.isBlank()) {
-            usuario.setApellidos(apellidos);
+            persona.setApellidos(apellidos);
         } else {
             throw new Exception("Apellidos es obligatorio");
         }
         if (dni != null && !dni.isBlank()) {
-            usuario.setDni(dni);
+            persona.setDni(dni);
         } else {
             throw new Exception("DNI es obligatorio");
         }
         
         if (domicilio != null && !domicilio.isBlank()) {
-            usuario.setDomicilio(domicilio);
+            persona.setDomicilio(domicilio);
         } 
         
         if (localidad != null && !localidad.isBlank()) {
-            usuario.setLocalidad(localidad);
+            persona.setLocalidad(localidad);
         } 
         
         if (municipio != null && !municipio.isBlank()) {
-            usuario.setMunicipio(municipio);
+            persona.setMunicipio(municipio);
         } 
         
         // TODO faltaría comprobar la provincia
         if (provincia != null && !provincia.isBlank()) {
-            usuario.setProvincia(provincia);
+            persona.setProvincia(provincia);
         } 
 
         if (codigoPostal != null && !codigoPostal.isBlank()) {
             // Comprobamos que CP tiene el formato esperado
             if (codigoPostal.matches("[0-9]{5}")) {
-                usuario.setCodigoPostal(codigoPostal);
+                persona.setCodigoPostal(codigoPostal);
             } else {
                 throw new Exception("El codigo postal no tiene el formato esperado {NNNNN}");
             }
@@ -67,14 +64,14 @@ class UsuarioServices {
             }
         
         if (sexo != null && !sexo.isBlank()) {
-            Usuario.Sexo eSexo = null;
+            Persona.Sexo eSexo = null;
             try {
-                eSexo = Usuario.Sexo.valueOf(sexo);
+                eSexo = Persona.Sexo.valueOf(sexo);
             } catch (Exception ex) {
                 throw new Exception("El valor de sexo no es correcto." + ex.getMessage());
             }
             if (eSexo != null) {
-                usuario.setSexo(eSexo);
+                persona.setSexo(eSexo);
             } else {
                 throw new Exception("El valor de sexo no es correcto.");
             }
@@ -83,20 +80,34 @@ class UsuarioServices {
         }
         
         if (aficiones != null) {
-            usuario.setAficiones(new ArrayList<>(Arrays.asList(aficiones)));
+            persona.setAficiones(new ArrayList<>(Arrays.asList(aficiones)));
         }
 
         if (fechaNacimiento != null && !fechaNacimiento.isBlank()) {
             SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 persona.setFechaNacimiento(sdfIn.parse(fechaNacimiento));
-            } catch (ParseException ex){
+            } catch (Exception ex){
                 throw new Exception("El valor de la fecha de nacimiento no es correcto. " + ex.getMessage());
             }
         }
 
-        return usuario;
+        return persona;
     }
     
 /*
+    
+    private String nombre;
+    private String apellidos;
+    private String dni;    
+    private String domicilio;
+    private String localidad;
+    private String municipio;
+    private String codigoPostal;
+    private String provincia;
+    private Sexo sexo;
+    private List<String> aficiones;
+    private Date fechaNacimiento;    
+    */    
+    
 }
