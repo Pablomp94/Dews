@@ -90,7 +90,7 @@ class UsuarioServices {
             SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd");
             try {
                 persona.setFechaNacimiento(sdfIn.parse(fechaNacimiento));
-            } catch (Exception ex){
+            } catch (ParseException ex){
                 throw new Exception("El valor de la fecha de nacimiento no es correcto. " + ex.getMessage());
             }
         }
