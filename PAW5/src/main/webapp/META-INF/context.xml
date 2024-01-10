@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/PAW5"/>
+
+<ResourceLink name="jdbc/TiendaBD"
+ global="jdbc/derbyTiendaBD"
+ auth="Container"
+ type="javax.sql.DataSource" />
