@@ -24,6 +24,8 @@ public class Usuario implements Serializable {
  private String password;
  private String email;
  private Date fechaRegistro;
+ 
+ 
  private Collection<Direccion> direcciones;
  private Collection<Aficion> aficiones;
  private Collection<Rol> roles;

@@ -4,13 +4,22 @@
  */
 package es.albares.dwes.paw5.entidades;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pablo
  */
-public class Aficion {
+public class Aficion implements Serializable{
+    
+    private static long serialVersionUID = 1L; // versión de la entidad{
     
     private String nombre;
+    
+    
+    public Aficion(String nombre){
+        this.nombre = nombre;
+    }
 
     /**
      * @return the nombre
@@ -26,4 +35,12 @@ public class Aficion {
         this.nombre = nombre;
     }
     
+    
+     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Aficion aficion){
+            return (aficion.getNombre().equals(nombre));
+        }
+        return false;
+    }
 }

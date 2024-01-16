@@ -4,15 +4,27 @@
  */
 package es.albares.dwes.paw5.entidades;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pablo
  */
-public class Rol {
+public class Rol implements Serializable {
+    
+    private static long serialVersionUID = 1L; // versión de la entidad{
     
     private String codigo;
     private String nombre;
 
+    
+    public Rol(String codigo, String nombre){
+        this.codigo = codigo;
+        this.nombre = nombre;
+    }
+    
+    
+    
     /**
      * @return the codigo
      */
@@ -41,4 +53,14 @@ public class Rol {
         this.nombre = nombre;
     }
     
+    
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Rol rol){
+            return(rol.getCodigo().equals(codigo) &&
+                    rol.getNombre().equals(nombre));
+        }
+        return false;
+    }
 }

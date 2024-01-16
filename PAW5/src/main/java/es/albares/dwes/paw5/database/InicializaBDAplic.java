@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package es.albares.dwes.paw5.listeners;
+package es.albares.dwes.paw5.database;
 
 import es.albares.dwes.paw5.database.GestorConexion;
 import jakarta.inject.Inject;

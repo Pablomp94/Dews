@@ -19,4 +19,3 @@ public interface EntidadDAOBD <T, PK extends Serializable> {
  int update(T t) throws SQLException;
  int delete(T t) throws SQLException;
 }
-
