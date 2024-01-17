@@ -44,6 +44,10 @@ public class Usuario implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
 
+    public Usuario(String string, String string0) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     /**
      * @return the id
      */

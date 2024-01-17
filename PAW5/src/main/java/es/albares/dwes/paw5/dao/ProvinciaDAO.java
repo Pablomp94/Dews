@@ -106,7 +106,5 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
     public int delete(Provincia t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
-    
 }
     
