@@ -35,6 +35,19 @@ public class Aficion implements Serializable{
         this.nombre = nombre;
     }
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj){
+        if (obj instanceof Aficion){
+            this.getNombre().equals(aficion.getNombre());
+        }
+        return false;
+    }
+    
     
      @Override
     public boolean equals(Object obj) {
