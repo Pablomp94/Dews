@@ -1,6 +1,7 @@
 package es.albares.dwes.paw5.servicios;
 
 import es.albares.dwes.paw5.dao.AficionDAO;
+import es.albares.dwes.paw5.dao.DireccionDAO;
 import es.albares.dwes.paw5.dao.ProvinciaDAO;
 import es.albares.dwes.paw5.dao.UsuarioDAO;
 import es.albares.dwes.paw5.entidades.Aficion;
@@ -9,6 +10,7 @@ import es.albares.dwes.paw5.entidades.Sexo;
 import es.albares.dwes.paw5.entidades.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,7 +104,7 @@ public class registraUsuario {
             if (fechaNacimiento != null && !fechaNacimiento.isBlank()) {
                 SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    usuario.setFechaNacimiento(sdfIn.parse(fechaNacimiento));
+                    usuario.setFechaNacimiento((Date) sdfIn.parse(fechaNacimiento));
                 } catch (ParseException ex) {
                     throw new Exception(
                             "El valor de la fecha de nacimiento no es correcto. " + ex.getMessage());

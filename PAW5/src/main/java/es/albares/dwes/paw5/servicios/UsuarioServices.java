@@ -9,11 +9,15 @@ import es.albares.dwes.paw5.entidades.Sexo;
 import es.albares.dwes.paw5.entidades.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.sql.Date;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,7 +44,7 @@ public class UsuarioServices {
             String sexo, String[] aficiones, String fechaNacimiento,
             String login, String passw, String passw_rep, String email) throws Exception {
 
-            Usuario usuario = new Usuario();
+        Usuario usuario = new Usuario();
         try {
             // realizamos las comprobaciones de los datos que se recuperan
             // primero los obligatorios
@@ -105,7 +109,7 @@ public class UsuarioServices {
             if (fechaNacimiento != null && !fechaNacimiento.isBlank()) {
                 SimpleDateFormat sdfIn = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    usuario.setFechaNacimiento(sdfIn.parse(fechaNacimiento));
+                    usuario.setFechaNacimiento((Date) sdfIn.parse(fechaNacimiento));
                 } catch (ParseException ex) {
                     throw new Exception(
                             "El valor de la fecha de nacimiento no es correcto. " + ex.getMessage());
@@ -139,7 +143,7 @@ public class UsuarioServices {
             lstDir.add(direc);
             usuario.setDirecciones(lstDir);
             // comprobamos que las aficiones asignadas desde el formulario coinciden con alguna de las aficiones de BD (si no coincide no se inserta en la lista del usuario)
- // antes hay que definir el método "equals" en la clase Aficion para asegurar que el".contains" funcionará correctamente
+            // antes hay que definir el método "equals" en la clase Aficion para asegurar que el".contains" funcionará correctamente
             List<Aficion> lstAfic = new ArrayList<>();
             if (usuario.getAficiones() != null && !usuario.getAficiones().isEmpty()) {
                 List<Aficion> aficionesBD = aficDAO.getAll();
@@ -158,4 +162,25 @@ public class UsuarioServices {
         }
     }
 
+    public Usuario obtenerUsuario(String login, String passw) throws Exception {
+        Usuario usuario = null;
+        try {
+            usuario = usuarioDAO.getUsuarioByLoginPassw(login, passw);
+            if (usuario == null || !usuario.esValido()) {
+                throw new Exception("Usuario no encontrado");
+            }
+            
+            /*
+            usuario.setDirecciones(direccionDAO.getDirecionesByUsuario(usuario.getId()));
+            usuario.setAficiones(aficDAO.getAficionesByUsuarioId(usuario.getId()));
+            */
+// faltan los roles
+        } catch (SQLException ex) {
+            Logger.getLogger(UsuarioServices.class.getName()).log(Level.SEVERE, null, ex);
+            throw ex;
+        }
+        return usuario;
+    }
 }
+
+

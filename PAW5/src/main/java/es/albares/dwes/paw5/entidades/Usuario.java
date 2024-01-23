@@ -13,22 +13,22 @@ import java.util.Collection;
  * @author Pablo
  */
 public class Usuario implements Serializable {
- private static long serialVersionUID = 1L; // versión de la entidad
- private Integer id;
- private String nombre;
- private String apellidos;
- private Sexo sexo;
- private Date fechaNacimiento;
- private String dni;
- private String login;
- private String password;
- private String email;
- private Date fechaRegistro;
- 
- 
- private Collection<Direccion> direcciones;
- private Collection<Aficion> aficiones;
- private Collection<Rol> roles;
+
+    private static long serialVersionUID = 1L; // versión de la entidad
+    private Integer id;
+    private String nombre;
+    private String apellidos;
+    private Sexo sexo;
+    private Date fechaNacimiento;
+    private String dni;
+    private String login;
+    private String password;
+    private String email;
+    private Date fechaRegistro;
+
+    private Collection<Direccion> direcciones;
+    private Collection<Aficion> aficiones;
+    private Collection<Rol> roles;
 
     /**
      * @return the serialVersionUID
@@ -46,6 +46,22 @@ public class Usuario implements Serializable {
 
     public Usuario(String string, String string0) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Usuario() {
+    }
+
+    public Usuario(int id, String nombre, String apellidos, String sexo, java.sql.Date fechaNac, String dni, String login, String password, String email, java.sql.Date fechaReg) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.sexo = Sexo.valueOf(sexo);
+        this.fechaNacimiento = fechaNac;
+        this.dni = dni;
+        this.login = login;
+        this.password = password;
+        this.email = email;
+        this.fechaRegistro = fechaReg;
     }
 
     /**
@@ -96,8 +112,8 @@ public class Usuario implements Serializable {
     public Sexo getSexo() {
         return sexo;
     }
-    
-    public void setSexo(Sexo sexo){
+
+    public void setSexo(Sexo sexo) {
         this.sexo = sexo;
     }
 
@@ -233,4 +249,14 @@ public class Usuario implements Serializable {
     public void setRoles(Collection<Rol> roles) {
         this.roles = roles;
     }
+
+    public boolean esValido() {
+        return (getId() != null && getId() > 0
+                && getNombre() != null && !getNombre().isBlank());
+    }
+
+    public boolean esVacio() {
+        return (getNombre() == null || getNombre().isBlank());
+    }
+
 }

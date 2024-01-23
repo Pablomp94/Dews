@@ -95,8 +95,13 @@ public class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
         return usuario;
     }
 
-    
-    public Integer insert (Usuario usuario) throws SQLException {
+    /**
+     *
+     * @param usuario
+     * @return
+     * @throws SQLException
+     */
+    public Integer insert(Usuario usuario) throws SQLException {
         String insertUsuario = "insert into usuario(nombre, apellidos, sexo, fecha_nacimiento, dni,login, password, email) values( ?,  ?,  ?,  ?,  ?,  ?,  ?,  ?)";
         // no requiere id"
 
@@ -226,18 +231,42 @@ public class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
         return idUsuario;
     }
 
-    
-    
-    
-    
-        @Override
-        public int update (Usuario t) throws SQLException {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-        }
+    @Override
+    public int update(Usuario t) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 
-        @Override
-        public int delete (Usuario t) throws SQLException {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    @Override
+    public int delete(Usuario t) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public Usuario getUsuarioByLoginPassw(String login, String passw) throws SQLException {
+
+        String consulta = "select id, nombre, apellidos, sexo, fecha_nacimiento, dni, login, email, fecha_registro from usuario where login =  ? and  password =  ?";
+ 
+        Usuario usuario = null;
+
+        try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
+            pst.setString(1, login);
+            pst.setString(2, passw);
+            try (ResultSet rs = pst.executeQuery();) {
+                if (rs.next()) {
+                    usuario = new Usuario(rs.getInt("id"), rs.getString("nombre"),
+                            rs.getString("apellidos"), rs.getString("sexo"),
+                            rs.getDate("fecha_nacimiento"), rs.getString("dni"),
+                            rs.getString("login"), null, rs.getString("email"),
+                            rs.getDate("fecha_registro"));
+                }
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error obteniendo usuarioByLoginPassw - rs", ex);
+                throw ex;
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error obteniedo usuarioByLoginPassw", ex);
+            throw ex;
         }
+        return usuario;
+    }
 
 }
