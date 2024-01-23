@@ -95,12 +95,7 @@ public class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
         return usuario;
     }
 
-    /**
-     *
-     * @param usuario
-     * @return
-     * @throws SQLException
-     */
+    
     public Integer insert(Usuario usuario) throws SQLException {
         String insertUsuario = "insert into usuario(nombre, apellidos, sexo, fecha_nacimiento, dni,login, password, email) values( ?,  ?,  ?,  ?,  ?,  ?,  ?,  ?)";
         // no requiere id"

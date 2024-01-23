@@ -79,7 +79,7 @@ public class DireccionDAO implements EntidadDAOBD<Direccion, String> {
             pst.setString(1, codigo);
             try (ResultSet rs = pst.executeQuery();) {
                 if (rs.next()) {
-                    direcciones.add(new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getProvincia("provincia")));
+                    direccion = new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getProvincia("provincia"));
                 }
             } catch (SQLException ex) {
                 LOGGER.log(Level.SEVERE, "Error obteniedo direccionByCodigo", ex);

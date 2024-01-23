@@ -61,7 +61,7 @@ public class AltaUsuarioServlet extends HttpServlet {
         Usuario usuario = usuarioServ.registraUsuario(LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, aficiones, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD);
             
     }catch (Exception ex){
-        Logger.getLogger(AltaUsuario.class.getName().log(Level.SEVERE, ))
+        Logger.getLogger(AltaUsuario.class.getName().log(Level.SEVERE, "Error", ex));
     }
         
     }
