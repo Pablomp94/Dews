@@ -9,14 +9,14 @@
         font-weight: 600;
     }
 </style>
-<c:set var="provincias" value="${}"/>
+
 
 
 <script>
-    function validarPassword(){
-        if(document.getElementById('password').value) === document.getElementById('password_rep').value){
+    function validarPassword() {
+        if (document.getElementById('password').value) === document.getElementById('password_rep').value) {
             return true;
-        } else{
+        } else {
             alert("Contraseñas no coinciden");
             return false;
         }
@@ -42,25 +42,25 @@
                 <label for="dni" class="labelPersona">DNI *</label>
                 <input id="dni" name="dni" type="text" maxlength="11" size="20" required/>
                 <br /><br />                
-                
+
                 <fieldset
                     <legend>Dirección</legend>
-                <label for="direccion" class="labelPersona">Dirección</label>
-                <input id="direccion" name="direccion" type="text" maxlength="250" size="100"/>
-                <br /><br />
-                <label for="codpostal" class="labelPersona">Código Postal *</label>
-                <input id="codpostal" name="codpostal" type="text" maxlength="5" size="5" required
-                       placeholder="XXXXX" pattern="[0-9]{5}"/>
-                <br /><br />
-                <label for="localidad" class="labelPersona">Localidad</label>
-                <input id="localidad" name="localidad" type="text" maxlength="100" size="70"/>
-                <br /><br />
-                
-                <label for="provincia" class="labelPersona">Provincia</label>
-                <select id="provincia" name="provincia">
-                    <c:forEach var="prov" items="${provinciaRepo.provincias}">
-                        <option value="${prov.codigo}"/>${prov.nombre}</option>
-                    </c:forEach>
+                    <label for="direccion" class="labelPersona">Dirección</label>
+                    <input id="direccion" name="direccion" type="text" maxlength="250" size="100"/>
+                    <br /><br />
+                    <label for="codpostal" class="labelPersona">Código Postal *</label>
+                    <input id="codpostal" name="codpostal" type="text" maxlength="5" size="5" required
+                           placeholder="XXXXX" pattern="[0-9]{5}"/>
+                    <br /><br />
+                    <label for="localidad" class="labelPersona">Localidad</label>
+                    <input id="localidad" name="localidad" type="text" maxlength="100" size="70"/>
+                    <br /><br />
+
+                    <label for="provincia" class="labelPersona">Provincia</label>
+                    <select id="provincia" name="provincia">
+                        <c:forEach var="prov" items="${provinciaRepo.provincias}">
+                            <option value="${prov.codigo}"/>${prov.nombre}</option>
+                        </c:forEach>
                 </fieldset>
                 </select>
                 <br /><br />
@@ -82,7 +82,7 @@
                 <label for="aficiones" class="labelPersona">Aficiones</label>
                 <select id="aficiones" name="aficiones" multiple>
                     <c:forEach var="afic" items="${aficionRepo.aficiones}">
-                             <option value="${afic.nombre}">${afic.nombre}</option>
+                        <option value="${afic.nombre}">${afic.nombre}</option>
                     </c:forEach>         
                     <option value="deporte">Deporte</option>
                     <option value="musica">Música</option>
@@ -95,7 +95,12 @@
                 <label for="confirmacion-PD"><input id="confirmacion-PD" name="protecdatos" type="checkbox" required/>Los datos de carácter personal que se pudieran recabar directamente de la persona interesada serán tratados de forma confidencial y quedarán incorporados a la correspondiente actividad de tratamiento titularidad de la ...</label>
                 <br /><br />
 
-
+                <label for="provincia" class="labelPersona">Provincia</label>
+                <select id="provincia" name="provincia">
+                    <c:forEach var="prov" items="${provinciaRepo.provincias}">
+                        <option value="${prov.codigo}"/>${prov.nombre}</option>
+                    </c:forEach>
+                </select>
 
                 <fieldset>
                     <legend>Autenticación</legend>

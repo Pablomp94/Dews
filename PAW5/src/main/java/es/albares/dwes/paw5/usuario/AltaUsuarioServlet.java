@@ -53,13 +53,14 @@ public class AltaUsuarioServlet extends HttpServlet {
         processRequest(request, response);
     }
     
+    
     private void processRequest(HttpServletRequest request, HttpServletResponse response) 
     throws ServletException, IOException {
         
-        
+
+                
     try{
-        Usuario usuario = usuarioServ.registraUsuario(LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, aficiones, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD, LEGACY_DO_HEAD);
-            
+        Usuario usuario = usuarioServ.registraUsuario();
     }catch (Exception ex){
         Logger.getLogger(AltaUsuario.class.getName().log(Level.SEVERE, "Error", ex));
     }

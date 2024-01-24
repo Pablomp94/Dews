@@ -110,6 +110,9 @@ public class registraUsuario {
                             "El valor de la fecha de nacimiento no es correcto. " + ex.getMessage());
                 }
             }
+            
+            
+            
             // Creamos direccion
             Direccion direc = new Direccion();
             if (direccion != null && !direccion.isBlank()) {
@@ -132,6 +135,7 @@ public class registraUsuario {
             } else {
                 throw new Exception("El codigo postal es obligatorio");
             }
+            
             /* ALMACENAMOS EN BD */
             List<Direccion> lstDir = new ArrayList<>();
             lstDir.add(direc);

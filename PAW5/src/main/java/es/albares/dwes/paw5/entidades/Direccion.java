@@ -20,7 +20,22 @@ public class Direccion implements Serializable {
     private String localidad;
     private String codigoPostal;
     private Provincia provincia;
+    
 
+    public Direccion (Integer id, Integer idUsuario, String direccion, String localidad, String codigoPostal, Provincia provincia){
+        this.id = id;
+        this.idUsuario = idUsuario;
+        this.direccion = direccion;
+        this.localidad = localidad;
+        this.codigoPostal = codigoPostal;
+        this.provincia = provincia;
+    }
+
+    public Direccion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
     /**
      * @return the id
      */

@@ -43,7 +43,7 @@ public class DireccionDAO implements EntidadDAOBD<Direccion, String> {
             ptm = conn.prepareStatement(consulta);
             rs = ptm.executeQuery();
             while (rs.next()) {
-                direcciones.add(new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getProvincia("provincia")));
+                direcciones.add(new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getProvincia(provincia)));
             }
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error consultando direcciones", ex);
@@ -74,12 +74,13 @@ public class DireccionDAO implements EntidadDAOBD<Direccion, String> {
     public Direccion getById(String codigo) throws SQLException {
         String consulta = "select codigo, nombre from direccion where codigo = ?";
         Direccion direccion = null;
+        
 
         try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
             pst.setString(1, codigo);
             try (ResultSet rs = pst.executeQuery();) {
                 if (rs.next()) {
-                    direccion = new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getProvincia("provincia"));
+                    direccion = new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), rs.getString("provincia"));
                 }
             } catch (SQLException ex) {
                 LOGGER.log(Level.SEVERE, "Error obteniedo direccionByCodigo", ex);
