@@ -16,13 +16,29 @@ import jakarta.inject.Named;
 @Named("usuarioBean")
 @SessionScoped
 public class UsuarioBean extends Usuario {
-
+    
  private static final long serialVersionUID = 1L;
+ 
+ private Integer id;
 
- public UsuarioBean(Integer id) {
-    super(id);
+ public UsuarioBean() {
+     
  }
-
+ 
+ 
+ public UsuarioBean (Integer id) {
+        this.id = id;
+    }
+ 
+ @Override
+ public Integer getId(){
+     return id;
+ }
+public void setUsuarioBean(Integer id) {
+    this.id = id;
+}
+ 
+ 
  public void descartar() {
  this.setId(null);
  }

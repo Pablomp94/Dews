@@ -31,6 +31,7 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
     public ProvinciaDAO() {
     }
 
+    @Override
     public List<Provincia> getAll() throws SQLException {
         String consulta = "select codigo, nombre from provincia";
         List<Provincia> provincias = new ArrayList<>();
@@ -71,6 +72,7 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
         return provincias;
     }
 
+    @Override
     public Provincia getById(String codigo) throws SQLException {
         String consulta = "select codigo, nombre from provincia where codigo = ?";
         Provincia provincia = null;

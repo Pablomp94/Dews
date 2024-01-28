@@ -15,7 +15,7 @@ import java.util.Collection;
 public class Usuario implements Serializable {
 
     private static long serialVersionUID = 1L; // versión de la entidad
-    private Integer id;
+    public Integer id;
     private String nombre;
     private String apellidos;
     private Sexo sexo;
