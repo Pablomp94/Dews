@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * @author Pablo
  */
 @ApplicationScoped
-public class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
+public abstract class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
 
     private static final Logger LOGGER = Logger.getLogger(UsuarioDAO.class.getName());
     @Inject
@@ -95,7 +95,13 @@ public class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
         return usuario;
     }
 
-    
+    /**
+     *
+     * @param usuario
+     * @return
+     * @throws SQLException
+     */
+    @Override
     public Integer insert(Usuario usuario) throws SQLException {
         String insertUsuario = "insert into usuario(nombre, apellidos, sexo, fecha_nacimiento, dni,login, password, email) values( ?,  ?,  ?,  ?,  ?,  ?,  ?,  ?)";
         // no requiere id"
