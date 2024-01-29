@@ -1,5 +1,6 @@
 package es.albares.dwes.paw5.usuario;
 
+import es.albares.dwes.paw5.beans.UsuarioBean;
 import es.albares.dwes.paw5.entidades.Usuario;
 import es.albares.dwes.paw5.servicios.UsuarioServices;
 import jakarta.inject.Inject;
@@ -28,6 +29,8 @@ public class AltaUsuarioServlet extends HttpServlet {
     UsuarioServices usuarioServ;
    
 
+    @Inject
+    UsuarioBean usuario;
     
 
    @Override
@@ -61,7 +64,7 @@ public class AltaUsuarioServlet extends HttpServlet {
     throws ServletException, IOException, SQLException {
         
         // comprobamos si hay usuario en la sesión
-        if (usuario.getNombre() != null && !Usuario.getNombre().isBlank()) {
+        if (usuario.getNombre() != null && !usuario.getNombre().isBlank()) {
             // añadimos un atributo con el texto del error y nombre "error"
             request.setAttribute("error", "El usuario ya está dado de alta");
 

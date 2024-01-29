@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * @author Pablo
  */
 @ApplicationScoped
-public abstract class UsuarioDAO implements EntidadDAOBD<Usuario, String> {
+public abstract class UsuarioDAO implements EntidadDAOBD<Usuario, Integer> {
 
     private static final Logger LOGGER = Logger.getLogger(UsuarioDAO.class.getName());
     @Inject
