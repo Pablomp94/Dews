@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Carro de compra</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- REVISA LA RUTA DE ACCESO A LA HOJA DE ESTILOS -->
+        <link rel="stylesheet" href="../css/estilos.css"/> 
+    </head>
+    <body>
+        <div><h1>Carrito de la compra</h1></div>
+        <a href="inicio">Ir al inicio</a>&nbsp;&nbsp;<a href="verCarrito">Ver carro de compra</a>
+        <div class="flex-productos">
+            <div class="productoCarro">
+                <div class="imagenCarro">
+                    <a href="producto?idProducto=[idProducto]" title="producto">
+                            <img src="../imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp" alt="foto producto"/>  
+                    </a>
+                </div>
+                <div class="contenedorProductoCarro">
+                    <div class="titulo">
+                        Samsung Galaxy S23 256GB Algodón Libre + cargador 25W
+                    </div>
+                    <div class="precio">749,00€</div>
+                </div>
+                <div class="contenedorCantidadCarro">
+                    <div class="cantidadProducto">
+                        <a href="carro?accion=substraer&idProducto={id}">[-]</a>
+                        <span class="cantidadProducto">{cantidad}</span>
+                        <a href="carro?accion=anyadir&idProducto={id}">[+]</a>
+                    </div>
+                    <div class="borrarProducto">
+                        <a href="carro?accion=borrar&idProducto={id}">Borrar</a>
+                    </div>						
+                </div>
+            </div>
+            
+            <div class="productoCarro">
+                <div class="imagenCarro">
+                    <a href="producto?idProducto=[idProducto]" title="producto">
+                            <img src="../imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp" alt="foto producto"/>  
+                    </a>
+                </div>
+                <div class="contenedorProductoCarro">
+                    <div class="titulo">
+                        Samsung Galaxy S23 256GB Algodón Libre + cargador 25W
+                    </div>
+                    <div class="precio">749,00€</div>
+                </div>
+                <div class="contenedorCantidadCarro">
+                    <div class="cantidadProducto">
+                        <a href="carro?accion=substraer&idProducto={id}">[-]</a>
+                        <span class="cantidadProducto">{cantidad}</span>
+                        <a href="carro?accion=anyadir&idProducto={id}">[+]</a>
+                    </div>
+                    <div class="borrarProducto">
+                        <a href="carro?accion=borrar&idProducto={id}">Borrar</a>
+                    </div>						
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>
