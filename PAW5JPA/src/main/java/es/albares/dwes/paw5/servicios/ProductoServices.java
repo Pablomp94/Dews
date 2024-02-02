@@ -1,12 +1,15 @@
 
-
+import es.albares.dwes.paw5.entidades.Categoria;
 import es.albares.dwes.paw5.entidades.Producto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Persistence;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -15,9 +18,9 @@ import java.util.HashMap;
 @Named("productoServices")
 @ApplicationScoped
 public class ProductoServices {
-    
+
     private HashMap<String, Producto> mapProductos;
-    
+
     public ProductoServices() {
         synchronized (this) {
             if (mapProductos == null) {
@@ -25,7 +28,14 @@ public class ProductoServices {
             }
         }
     }
-    
+
+    public class GestorEntityManager {
+
+        public static EntityManager getEntityManager() {
+            return Persistence.createEntityManagerFactory("tienda").createEntityManager();
+        }
+    }
+
     public Collection<Producto> getProductos() {
         return mapProductos.values();
     }
@@ -33,12 +43,15 @@ public class ProductoServices {
     /**
      * Inicializa la lita de productos con una colección de ejemplo
      */
-    private void init() {
-        mapProductos = new HashMap<>();
-        
-        mapProductos.put("SamsungGS23", 
-            new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W", 
-"""                    
+    private List<Producto> getStaticProducts() {
+
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        Categoria catMovil = entityManager.find(Categoria.class, "Movil");
+        entityManager.close();
+
+        mapProductos.put("SamsungGS23",
+                new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W",
+                        """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
             <li><strong>Procesador</strong> Qualcomm Snapdragon 8, Gen 2 Octa-Core (3.36GHz, 2.8GHz, 2GHz)</li>
@@ -100,11 +113,11 @@ public class ProductoServices {
             </li>
             </ul>
             """,
-            new GregorianCalendar(2023, 0, 1).getTime(), BigDecimal.valueOf("749")));
-        
+                        new GregorianCalendar(2023, 0, 1).getTime(), BigDecimal.valueOf("749")));
+
         mapProductos.put("SamsungGA54",
-            new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla", 
-"""                    
+                new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla",
+                        """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
             <li><strong>Procesador</strong> Exynos 1380 Octa-Core (2.4GHz, 2GHz)</li>
@@ -204,11 +217,11 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 5, 1).getTime(), BigDecimal.valueOf("469.01")));
-        
+                        new GregorianCalendar(2023, 5, 1).getTime(), BigDecimal.valueOf("469.01")));
+
         mapProductos.put("OppoFX5",
-            new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C", 
-"""                    
+                new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C",
+                        """                    
             <ul>
             <li><strong>Procesador</strong> Qualcomm Snapdragon 888 5G, 8 núcleos Kryo 680 a 2,84GHz (1 x Cortex X1 a 2,84GHz, 3 x Cortex A78 a 2,84GHz, 4 x Cortex A55 a 1,8GHz)</li>
             <li><strong>Pantalla </strong>6.5" AMOLED, 10 bits, 120 Hz</li>
@@ -269,11 +282,11 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 10, 1).getTime(), BigDecimal.valueOf("954.99")));
-        
+                        new GregorianCalendar(2023, 10, 1).getTime(), BigDecimal.valueOf("954.99")));
+
         mapProductos.put("SamsungGZF5",
-            new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W", 
-"""                    
+                new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W",
+                        """                    
             <ul>
             <li><strong>Pantalla</strong>
             <ul>
@@ -313,16 +326,32 @@ public class ProductoServices {
             <li><strong>Otros: </strong>One UI 5.1.1, Compatible con S pen</li>
             <li><strong>Caja: </strong>Cable USB C</li>
             </ul>""",
-            new GregorianCalendar(2023, 7, 12).getTime(), BigDecimal.valueOf("2029.90")));        
+                        new GregorianCalendar(2023, 7, 12).getTime(), BigDecimal.valueOf("2029.90")));
     }
-    
+
     /**
      * Devuelve el Producto que es identificado por el parámetro Id
+     *
      * @param id
-     * @return 
+     * @return
      */
     public Producto getProductoById(String id) {
         return mapProductos.get(id);
     }
-    
+
+    // damos de alta los productos desde su carga "local"
+    public void altaProductos() {
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        // damos da alta los productos en BD (si no existen...)
+        entityManager.getTransaction().begin();
+        try{
+        for (Producto prod : getStaticProducts()) {
+            entityManager.merge(prod);
+        }
+        entityManager.getTransaction().commit();
+        }catch (Exception EX){
+            entityManager.getTransaction().rollback();
+        }
+        entityManager.close();
+    }
 }
