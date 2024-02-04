@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/paw5jpa">
+  <ResourceLink auth="Container" global="jdbc/derbyTiendaBD" name="jdbc/tiendaBD" type="javax.sql.DataSource"/>
+</Context>
