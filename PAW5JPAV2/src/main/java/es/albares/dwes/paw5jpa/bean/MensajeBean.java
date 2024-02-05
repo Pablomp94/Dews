@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @Named("mensajeBean")
 @RequestScoped

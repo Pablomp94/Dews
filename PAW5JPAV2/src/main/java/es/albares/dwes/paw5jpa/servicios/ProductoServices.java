@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 public class ProductoServices {
 

@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/usuario/login"})
 public class LoginServlet extends HttpServlet {

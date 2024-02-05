@@ -12,7 +12,7 @@ import jakarta.servlet.annotation.WebListener;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebListener
 public class InicializaBDAplic implements ServletContextListener {

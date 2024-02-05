@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 public class Usuario implements Serializable {
 

@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @ApplicationScoped
 public class UsuarioDAO implements EntidadDAOBD<Usuario, Integer> {

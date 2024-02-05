@@ -10,7 +10,7 @@ import jakarta.inject.Named;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @Named("usuarioBean")
 @SessionScoped

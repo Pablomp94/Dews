@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebServlet(name = "CerrarSesionServlet", urlPatterns = {"/usuario/cerrarSesion"})
 public class CerrarSesionServlet extends HttpServlet {

@@ -1,7 +1,7 @@
 <%-- 
     Document   : viewUsuario
     Created on : 28 ene 2024, 13:26:51
-    Author     : eloy
+    Author     : pablo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

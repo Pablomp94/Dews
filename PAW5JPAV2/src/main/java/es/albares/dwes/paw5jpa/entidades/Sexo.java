@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 public enum Sexo implements Serializable {
     M("Masculino"),

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebServlet(name = "ServletAltaUsuario", urlPatterns = {"/usuario/altaUsuario"})
 public class ServletAltaUsuario extends HttpServlet {

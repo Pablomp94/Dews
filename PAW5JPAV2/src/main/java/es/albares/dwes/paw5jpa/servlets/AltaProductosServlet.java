@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebServlet(name = "AltaProductosServlet", urlPatterns = {"/tienda/altaProductos"})
 public class AltaProductosServlet extends HttpServlet { 

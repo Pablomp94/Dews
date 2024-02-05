@@ -1,7 +1,7 @@
 <%-- 
     Document   : inicio.jsp
     Created on : 28 ene 2024, 12:50:29
-    Author     : eloy
+    Author     : pablo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

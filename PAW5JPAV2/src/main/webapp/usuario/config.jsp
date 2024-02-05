@@ -1,7 +1,7 @@
 <%-- 
     Document   : config
     Created on : 28 ene 2024, 13:01:56
-    Author     : eloy
+    Author     : pablo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

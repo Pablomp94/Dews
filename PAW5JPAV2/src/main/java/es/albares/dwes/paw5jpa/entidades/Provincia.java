@@ -6,7 +6,7 @@ package es.albares.dwes.paw5jpa.entidades;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 public class Provincia {
     

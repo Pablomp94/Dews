@@ -6,7 +6,7 @@ package es.albares.dwes.paw5jpa.database;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;

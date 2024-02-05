@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @ApplicationScoped
 public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {

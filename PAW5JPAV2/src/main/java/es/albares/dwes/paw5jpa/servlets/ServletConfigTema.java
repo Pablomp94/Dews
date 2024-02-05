@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @WebServlet(name = "servletConfigTema", urlPatterns = {"/usuario/config"})
 public class ServletConfigTema extends HttpServlet {

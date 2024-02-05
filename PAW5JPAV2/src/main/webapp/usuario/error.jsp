@@ -1,7 +1,7 @@
 <%-- 
     Document   : error
     Created on : 28 ene 2024, 13:39:15
-    Author     : eloy
+    Author     : pablo
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

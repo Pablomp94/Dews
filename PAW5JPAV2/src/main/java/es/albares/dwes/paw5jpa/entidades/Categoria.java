@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @Entity
 public class Categoria implements Serializable {

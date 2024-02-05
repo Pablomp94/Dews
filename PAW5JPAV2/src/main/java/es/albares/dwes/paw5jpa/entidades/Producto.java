@@ -17,7 +17,7 @@ import java.util.Date;
 
 /**
  *
- * @author eloy
+ * @author pablo
  */
 @Entity
 public class Producto implements Serializable {
