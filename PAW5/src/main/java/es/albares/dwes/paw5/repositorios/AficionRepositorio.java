@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.repositorios;
 
 import es.albares.dwes.paw5.dao.AficionDAO;
@@ -16,30 +12,30 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @Named("aficionRepo")
 @ApplicationScoped
 public class AficionRepositorio {
-
+    
     @Inject
-    private AficionDAO provDAO;
+    private AficionDAO aficDAO;
     private static List<Aficion> lstAficiones;
-
+    
     private final Object obj = new Object();
 
-    public List<Aficion> getAficions() {
+    public List<Aficion> getAficiones() {
         if (lstAficiones == null) {
-            synchronized (obj) {
-                if (lstAficiones == null) {
-                    try {
-                        lstAficiones = provDAO.getAll();
-                    } catch (SQLException ex) {
-                        Logger.getLogger("AficionRepositorio").log(Level.SEVERE, null, ex);
-                    }
+          synchronized (obj) {
+            if (lstAficiones == null) {
+                try {
+                    lstAficiones = aficDAO.getAll();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AficionRepositorio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+          }
         }
-        return lstAficiones;
+       return lstAficiones;
     }
 }

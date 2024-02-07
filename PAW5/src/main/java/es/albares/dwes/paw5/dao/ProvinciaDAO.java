@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.dao;
 
-import es.albares.dwes.paw5.database.GestorConexion;
+import es.albares.dwes.paw5.basedatos.GestorConexion;
 import es.albares.dwes.paw5.entidades.Provincia;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,23 +15,23 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @ApplicationScoped
-public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
-
+public class ProvinciaDAO implements EntidadDaoBD<Provincia, String>{
+    
     private static final Logger LOGGER = Logger.getLogger(ProvinciaDAO.class.getName());
+    
     @Inject
     private GestorConexion gestorCon;
 
-    public ProvinciaDAO() {
-    }
-
+    public ProvinciaDAO() { }
+    
     @Override
     public List<Provincia> getAll() throws SQLException {
         String consulta = "select codigo, nombre from provincia";
         List<Provincia> provincias = new ArrayList<>();
-
+        
         Connection conn = null;
         PreparedStatement ptm = null;
         ResultSet rs = null;
@@ -44,40 +40,37 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
             ptm = conn.prepareStatement(consulta);
             rs = ptm.executeQuery();
             while (rs.next()) {
-                provincias.add(new Provincia(rs.getString("codigo"), rs.getString("nombre")));
-            }
+                Provincia prov = new Provincia(rs.getString("codigo"), rs.getString("nombre"));
+                provincias.add(prov);
+            }            
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error consultando provincias", ex);
             throw ex;
         } finally {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando provincias - rs", ex);
+            try { rs.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando provincias - cierre rs", ex);
+                throw ex;                    
+            }
+            try { ptm.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando provincias - cierre ptm", ex);
+                throw ex;                    
+            }
+            try { conn.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando provincias - cierre conn", ex);
                 throw ex;
             }
-            try {
-                ptm.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando provincias - ptm", ex);
-                throw ex;
-            }
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando provincias - conn", ex);
-                throw ex;
-            }
-        }
+        }  
         return provincias;
     }
-
+    
     @Override
     public Provincia getById(String codigo) throws SQLException {
+        
         String consulta = "select codigo, nombre from provincia where codigo = ?";
         Provincia provincia = null;
-
-        try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pst = conn.prepareStatement(consulta);){
             pst.setString(1, codigo);
             try (ResultSet rs = pst.executeQuery();) {
                 if (rs.next()) {
@@ -90,7 +83,7 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error obteniedo provinciaByCodigo", ex);
             throw ex;
-        }
+        } 
         return provincia;
     }
 
@@ -109,4 +102,3 @@ public class ProvinciaDAO implements EntidadDAOBD<Provincia, String> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
-    

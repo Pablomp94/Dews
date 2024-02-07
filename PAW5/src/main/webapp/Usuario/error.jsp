@@ -10,5 +10,7 @@
     <body>
         <p>Se ha producido un error:<br />
             <c:out value="${error}"/></p>
+        <br />
+        <p><a href="inicio.jsp">Página de inicio</a></p>
     </body>
 </html>

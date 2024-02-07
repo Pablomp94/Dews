@@ -1,46 +1,65 @@
 package es.albares.dwes.paw5.usuario;
 
-import es.albares.dwes.paw5.beans.UsuarioBean;
+import es.albares.dwes.paw5.beans.MensajeBean;
 import es.albares.dwes.paw5.entidades.Usuario;
+import es.albares.dwes.paw5.beans.UsuarioBean;
 import es.albares.dwes.paw5.servicios.UsuarioServices;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author usuario
  */
-@WebServlet(name="altaUsuario", urlPatterns={"usuario/altaUsuario"})
+@WebServlet("/usuario/altaUsuario")
 public class AltaUsuarioServlet extends HttpServlet {
-    
     
     @Inject
     UsuarioServices usuarioServ;
-   
-
-    @Inject
-    UsuarioBean usuario;
     
+    @Inject
+    UsuarioBean usuarioBean;
+    
+    @Inject
+    MensajeBean mensajeBean;
 
-   @Override
+    /** 
+     * Handles the HTTP <code>GET</code> method.
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+        // comprobamos que llega el parámetro idUsuario y que existe un usuario con ese parámetro.
+        int idUsuario = -1;
         try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
+            idUsuario = Integer.parseInt(request.getParameter("idUsuario"));
+        } catch (NullPointerException | NumberFormatException ex) {}
+        
+        if (idUsuario > 0 && usuarioServ.existeUsuario(idUsuario)) {
+            // enviamos a la página de inicio con mensaje
+            mensajeBean.setMensajeInfo("Usuario registrado correctamente");
+            RequestDispatcher rs = request.getRequestDispatcher("inicio.jsp");
+            rs.forward(request,response);            
+        } else {
+            // añadimos un atributo con el texto del error y nombre "error"
+            request.setAttribute("error", "Error tras alta de usuario.");
+
+            // redirigimos la petición al formulario de persona
+            RequestDispatcher rs = request.getRequestDispatcher("error.jsp");
+            rs.forward(request,response);
         }
+
     } 
 
     /** 
@@ -53,52 +72,39 @@ public class AltaUsuarioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (SQLException ex) {
-            Logger.getLogger(AltaUsuarioServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) 
-    throws ServletException, IOException, SQLException {
+        // parametro para la invocación GET de respuesta tras redirect (Patron PRG)
+        int idUsuario = 0;
         
         // comprobamos si hay usuario en la sesión
-        if (usuario.getNombre() != null && !usuario.getNombre().isBlank()) {
+        if (usuarioBean.getNombre() != null && !usuarioBean.getNombre().isBlank()) {
             // añadimos un atributo con el texto del error y nombre "error"
             request.setAttribute("error", "El usuario ya está dado de alta");
 
             // redirigimos la petición al formulario de persona
-            RequestDispatcher rs = request.getRequestDispatcher("/error.jsp");
+            RequestDispatcher rs = request.getRequestDispatcher("error.jsp");
             rs.forward(request,response);
-            return;
         } else {
-            
-            PreparedStatement ptm = null;
-            ResultSet rs = null;
-            rs = ptm.executeQuery();
-            // vienen parámetros del formulario... (suponemos que sí
-            // llamamos a PersonaServices para crear una persona con los datos del formulario
-            try{
-                Usuario usuario = new Usuario(rs.getInt("id"), rs.getString("nombre"),
-                        rs.getString("apellidos"), rs.getString("sexo"),
-                        rs.getDate("fecha_nacimiento"), rs.getString("dni"),
-                        rs.getString("login"), null, rs.getString("email"),
-                        rs.getDate("fecha_registro"));                    
+            try {
+                Usuario usuario = usuarioServ.registraUsuario( 
+                        request.getParameter("nombre"), request.getParameter("apellidos"), request.getParameter("dni"), 
+                        request.getParameter("direccion"), request.getParameter("localidad"), 
+                        request.getParameter("codpostal"), request.getParameter("provincia"),
+                        request.getParameter("sexo"), request.getParameterValues("aficiones"), request.getParameter("nacimiento"),
+                        request.getParameter("login"), request.getParameter("password"), request.getParameter("password_rep"), request.getParameter("email"));
+                idUsuario = usuario.getId();
             } catch (Exception ex) {
 
                 // añadimos un atributo con el texto del error y nombre "error"
                 request.setAttribute("error", ex.getMessage());
 
                 // redirigimos la petición al formulario de persona
-                RequestDispatcher rd;
-                rd = request.getRequestDispatcher("/error.jsp");
-                rd.forward(request,response);
-                return;
+                RequestDispatcher rs = request.getRequestDispatcher("error.jsp");
+                rs.forward(request,response);
             }
         }
         
-        // redirigimos a la página de inicio
-        response.sendRedirect(request.getContextPath() + "/usuario/inicio.jsp");
+        // redirigimos a la página de altaUsuario por GET
+        response.sendRedirect(request.getContextPath() + "/usuario/altaUsuario?idUsuario=" + idUsuario);
     }
+    
 }

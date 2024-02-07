@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.dao;
 
-import es.albares.dwes.paw5.database.GestorConexion;
+import es.albares.dwes.paw5.basedatos.GestorConexion;
 import es.albares.dwes.paw5.entidades.Aficion;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,77 +15,66 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @ApplicationScoped
-public class AficionDAO implements EntidadDAOBD<Aficion, String> {
-
+public class AficionDAO implements EntidadDaoBD<Aficion, String>{
+    
     private static final Logger LOGGER = Logger.getLogger(AficionDAO.class.getName());
+    
     @Inject
     private GestorConexion gestorCon;
 
     public AficionDAO() {
     }
-
+    
+    @Override
     public List<Aficion> getAll() throws SQLException {
-        String consulta = "select codigo, nombre from aficion";
+        
+        String consulta = "select nombre from aficion";
         List<Aficion> aficiones = new ArrayList<>();
-
-        Connection conn = null;
-        PreparedStatement ptm = null;
-        ResultSet rs = null;
-        try {
-            conn = gestorCon.getConnection();
-            ptm = conn.prepareStatement(consulta);
-            rs = ptm.executeQuery();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pts = conn.prepareStatement(consulta);
+            ResultSet rs = pts.executeQuery();) {
             while (rs.next()) {
-                aficiones.add(new Aficion( rs.getString("nombre")));
-            }
+                Aficion aficion = new Aficion(rs.getString("nombre"));
+                aficiones.add(aficion);
+            }            
+            
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error consultando aficiones", ex);
+            LOGGER.log(Level.SEVERE, "Error consultando provincias", ex);
             throw ex;
-        } finally {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando aficiones - rs", ex);
-                throw ex;
-            }
-            try {
-                ptm.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando aficiones - ptm", ex);
-                throw ex;
-            }
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando aficiones - conn", ex);
-                throw ex;
-            }
-        }
+        } 
+                
         return aficiones;
     }
 
-    public Aficion getById(String codigo) throws SQLException {
-        String consulta = "select codigo, nombre from aficion where codigo = ?";
-        Aficion aficion = null;
+    @Override
+    public Aficion getById(String id) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 
-        try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
-            pst.setString(1, codigo);
-            try (ResultSet rs = pst.executeQuery();) {
-                if (rs.next()) {
-                    aficion = new Aficion(rs.getString("nombre"));
+    public List<Aficion> getAficionesByUsuarioId(Integer usuarioId) throws SQLException {
+        
+        String consulta = "select AFICION_NOMBRE from USUARIO_AFICION where usuario_id = ?";
+        List<Aficion> aficiones = new ArrayList<>();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pts = conn.prepareStatement(consulta);) {
+            pts.setInt(1, usuarioId);
+            try (ResultSet rs = pts.executeQuery()) {
+                while (rs.next()) {
+                    aficiones.add(new Aficion(rs.getString("AFICION_NOMBRE")));
                 }
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error obteniedo aficionByCodigo", ex);
-                throw ex;
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error obteniedo aficionByCodigo", ex);
+            LOGGER.log(Level.SEVERE, "Error consultando provincias", ex);
             throw ex;
-        }
-        return aficion;
+        } 
+                
+        return aficiones;
     }
 
     @Override
@@ -106,7 +91,5 @@ public class AficionDAO implements EntidadDAOBD<Aficion, String> {
     public int delete(Aficion t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     
 }
-    

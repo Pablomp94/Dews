@@ -8,7 +8,7 @@
         <title>Configuración</title>
     </head>
     <body>
-        <form method="get" action="${pageContext.request.contextPath}/configUsuario">
+        <form method="get" action="${pageContext.request.contextPath}/usuario/configUsuario">
             <label for="configTema">Seleccione un tema:</label>
             <select name="configTema">
                 <option value="temaA" <c:if test="${cookie.configuracionTema.value eq 'temaA'}">selected</c:if>>Tema Azul claro</option>

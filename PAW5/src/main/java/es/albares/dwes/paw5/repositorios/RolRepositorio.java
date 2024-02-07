@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.repositorios;
 
 import es.albares.dwes.paw5.dao.RolDAO;
@@ -16,30 +12,30 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @Named("rolRepo")
 @ApplicationScoped
 public class RolRepositorio {
-
+    
     @Inject
-    private RolDAO provDAO;
+    private RolDAO rolDAO;
     private static List<Rol> lstRoles;
-
+    
     private final Object obj = new Object();
 
-    public List<Rol> getRoles() {
+    public List<Rol> getAficiones() {
         if (lstRoles == null) {
-            synchronized (obj) {
-                if (lstRoles == null) {
-                    try {
-                        lstRoles = provDAO.getAll();
-                    } catch (SQLException ex) {
-                        Logger.getLogger("RolRepositorio").log(Level.SEVERE, null, ex);
-                    }
+          synchronized (obj) {
+            if (lstRoles == null) {
+                try {
+                    lstRoles = rolDAO.getAll();
+                } catch (SQLException ex) {
+                    Logger.getLogger(RolRepositorio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+          }
         }
-        return lstRoles;
+       return lstRoles;
     }
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.repositorios;
 
 import es.albares.dwes.paw5.dao.ProvinciaDAO;
@@ -16,30 +12,30 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @Named("provinciaRepo")
 @ApplicationScoped
 public class ProvinciaRepositorio {
-
+    
     @Inject
     private ProvinciaDAO provDAO;
     private static List<Provincia> lstProvincias;
-
+    
     private final Object obj = new Object();
 
     public List<Provincia> getProvincias() {
         if (lstProvincias == null) {
-            synchronized (obj) {
-                if (lstProvincias == null) {
-                    try {
-                        lstProvincias = provDAO.getAll();
-                    } catch (SQLException ex) {
-                        Logger.getLogger("ProvinciaRepositorio").log(Level.SEVERE, null, ex);
-                    }
+          synchronized (obj) {
+            if (lstProvincias == null) {
+                try {
+                    lstProvincias = provDAO.getAll();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ProvinciaRepositorio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+          }
         }
-        return lstProvincias;
+       return lstProvincias;
     }
 }

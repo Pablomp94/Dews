@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.dao;
 
-import es.albares.dwes.paw5.database.GestorConexion;
+import es.albares.dwes.paw5.basedatos.GestorConexion;
 import es.albares.dwes.paw5.entidades.Direccion;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,88 +15,152 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @ApplicationScoped
-public class DireccionDAO implements EntidadDAOBD<Direccion, String> {
-
+public class DireccionDAO implements EntidadDaoBD<Direccion, Integer> {
+    
     private static final Logger LOGGER = Logger.getLogger(DireccionDAO.class.getName());
+    
     @Inject
     private GestorConexion gestorCon;
     
     @Inject
-    private ProvinciaDAO provincia;
+    ProvinciaDAO provinciaDAO;
 
     public DireccionDAO() {
     }
-
+    
+    @Override
     public List<Direccion> getAll() throws SQLException {
-        String consulta = "select codigo, nombre from direccion";
+        String consulta = "select id, usuario_id, direccion, localidad, provincia, codigoPostal from direccion_usuario"; 
         List<Direccion> direcciones = new ArrayList<>();
-
-        Connection conn = null;
-        PreparedStatement ptm = null;
-        ResultSet rs = null;
-        try {
-            conn = gestorCon.getConnection();
-            ptm = conn.prepareStatement(consulta);
-            rs = ptm.executeQuery();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pst = conn.prepareStatement(consulta);
+            ResultSet rs = pst.executeQuery();) {
             while (rs.next()) {
-                direcciones.add(new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), provincia.getById("provincia")));
-            }
+                direcciones.add(new Direccion(rs.getInt("id"), rs.getInt("usuario_id"), rs.getString("direccion"), rs.getString("localidad"), 
+                        rs.getString("codigo_postal"), provinciaDAO.getById(rs.getString("provincia"))));
+            }   
+            rs.close();
         } catch (SQLException ex) {
             LOGGER.log(Level.SEVERE, "Error consultando direcciones", ex);
             throw ex;
-        } finally {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando direcciones - rs", ex);
-                throw ex;
-            }
-            try {
-                ptm.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando direcciones - ptm", ex);
-                throw ex;
-            }
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando direcciones - conn", ex);
-                throw ex;
-            }
-        }
+        } 
         return direcciones;
     }
-
-    public Direccion getById(String codigo) throws SQLException {
-        String consulta = "select codigo, nombre from direccion where codigo = ?";
+    
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public Direccion getById(Integer id) throws SQLException {
+        
+        String consulta = "select id, usuario_id, direccion, localidad, provincia, codigo_postal from direccion_usuario where id = ?";
         Direccion direccion = null;
         
-
-        try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
-            pst.setString(1, codigo);
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pst = conn.prepareStatement(consulta);){
+            pst.setInt(1, id);
             try (ResultSet rs = pst.executeQuery();) {
                 if (rs.next()) {
-                    direccion = new Direccion (rs.getInt("id"),rs.getInt("idUsuario"),rs.getString("direccion"), rs.getString("localidad"), rs.getString("codigoPostal"), provincia.getById("provincia"));
+                    direccion = new Direccion(rs.getInt("id"), rs.getInt("usuario_id"), rs.getString("direccion"), rs.getString("localidad"), 
+                        rs.getString("codigo_postal"), provinciaDAO.getById(rs.getString("provincia")));
                 }
             } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error obteniedo direccionByCodigo", ex);
+                LOGGER.log(Level.SEVERE, "Error obteniendo byId - rs", ex);
                 throw ex;
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error obteniedo direccionByCodigo", ex);
+            LOGGER.log(Level.SEVERE, "Error obteniendo byId", ex);
             throw ex;
-        }
+        } 
         return direccion;
+    }    
+    
+    public List<Direccion> getDirecionesByUsuario(Integer idUsuario) throws SQLException {
+        
+        String consulta = "select id, usuario_id, direccion, localidad, provincia, codigo_postal from direccion_usuario where usuario_id = ?";
+        List<Direccion> direcciones = new ArrayList<>();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pst = conn.prepareStatement(consulta);){
+            pst.setInt(1, idUsuario);
+            try (ResultSet rs = pst.executeQuery();) {
+                while (rs.next()) {
+                    direcciones.add(
+                            new Direccion(rs.getInt("id"), rs.getInt("usuario_id"), rs.getString("direccion"), rs.getString("localidad"), 
+                        rs.getString("codigo_postal"), provinciaDAO.getById(rs.getString("provincia"))));
+                }
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error obteniendo getDirecionesByUsuario - rs", ex);
+                throw ex;
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error obteniendo getDirecionesByUsuario", ex);
+            throw ex;
+        } 
+        return direcciones;
     }
-
+    
     @Override
-    public String insert(Direccion t) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Integer insert(Direccion direccion) throws SQLException {
+        String insertDireccion = "insert into direccion_usuario(usuario_id, direccion, localidad, provincia, codigo_postal) values (?, ?, ?, ?, ?)"; // no requiere id
+        
+        // comprobamos si el usuario tiene id, en cuyo caso no se inserta
+        if (direccion.getId() != null) {
+            LOGGER.log(Level.SEVERE, "Error insertando Direccion - direcion ya insertada");
+            throw new SQLException("Error insertando Direccion - dirección ya está insertado");
+        }
+        
+        int idDireccion = 0;
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pst = conn.prepareStatement(insertDireccion, PreparedStatement.RETURN_GENERATED_KEYS);) {
+            int index = 1;
+            pst.setInt(index++, direccion.getUsuarioId());
+            if (direccion.getDireccion() != null) {
+                pst.setString(index++, direccion.getDireccion());
+            } else {
+                pst.setNull(index++, java.sql.Types.VARCHAR);
+            }
+            if (direccion.getLocalidad() != null) {
+                pst.setString(index++, direccion.getLocalidad());
+            } else {
+                pst.setNull(index++, java.sql.Types.VARCHAR);
+            }
+            if (direccion.getProvincia() != null) {
+                pst.setString(index++, direccion.getProvincia().getCodigo());
+            } else {
+                pst.setNull(index++, java.sql.Types.VARCHAR);
+            }
+            if (direccion.getCodigoPostal() != null) {
+                pst.setString(index++, direccion.getCodigoPostal());
+            } else {
+                pst.setNull(index++, java.sql.Types.VARCHAR);
+            } 
+            pst.executeUpdate();
+            
+            ResultSet rs = pst.getGeneratedKeys(); // devuelve los ids generados
+            if (rs.next()) {
+                idDireccion = rs.getInt(1);
+            }
+            try { rs.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error insertando dirección - cierre rs", ex);
+                throw ex;
+            }        
+            
+            if (idDireccion == 0) {
+                LOGGER.log(Level.SEVERE, "Error insertando dirección");
+                throw new SQLException("Error insertando dirección");
+            }
+        }
+        return idDireccion;
     }
-
+    
     @Override
     public int update(Direccion t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -110,7 +170,5 @@ public class DireccionDAO implements EntidadDAOBD<Direccion, String> {
     public int delete(Direccion t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     
 }
-    

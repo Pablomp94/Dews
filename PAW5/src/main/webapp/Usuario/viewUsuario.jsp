@@ -18,58 +18,60 @@
     </head>
     <body>
         <h1>Datos del usuario</h1>
-        <c:if test="${! empty usuario}">        
+        <c:if test="${usuarioBean.esValido()}">
         <div>
             <span class="labelPersona">Nombre</span>
-            <c:out value="${usuario.nombre}"/>
+            <c:out value="${usuarioBean.nombre}"/>
             <br /><br />
             <span class="labelPersona">Apellidos</span>
-            <c:out value="${usuario.apellidos}"/>
+            <c:out value="${usuarioBean.apellidos}"/>
             <br /><br />
             <span class="labelPersona">DNI</span>
-            <c:out value="${usuario.dni}"/>
+            <c:out value="${usuarioBean.dni}"/>
             <br /><br />
-            <c:if test="${!empty usuario.domicilio}">
+            <c:if test="${!empty usuarioBean.direcciones[0].direccion}">
             <span class="labelPersona">Dirección</span>
-            <c:out value="${usuario.domicilio}"/>
+            <c:out value="${usuarioBean.direcciones[0].direccion}"/>
             <br /><br />
             </c:if>
             <span class="labelPersona">Código Postal</span>
-            <c:out value="${usuario.codigoPostal}"/>
+            <c:out value="${usuarioBean.direcciones[0].codigoPostal}"/>
             <br /><br />
-            <c:if test="${!empty usuario.localidad}">
+            <c:if test="${!empty usuarioBean.direcciones[0].localidad}">
             <span class="labelPersona">Localidad</span>
-            <c:out value="${usuario.localidad}"/>
+            <c:out value="${usuarioBean.direcciones[0].localidad}"/>
             <br /><br />
             </c:if>
-            <c:if test="${!empty usuario.municipio}">
-            <span class="labelPersona">Municipio</span>
-            <c:out value="${usuario.municipio}"/>
-            <br /><br />
-            </c:if>
-            <c:if test="${!empty usuario.provincia}">
+            <c:if test="${!empty usuarioBean.direcciones[0].provincia}">
             <span class="labelPersona">Provincia</span>
-            <c:out value="${usuario.provincia}"/>
+            <c:out value="${usuarioBean.direcciones[0].provincia.nombre}"/>
             <br /><br />
             </c:if>
             <span class="labelPersona">Sexo</span>
-            <c:out value="${usuario.textoSexo}"/>
+            <c:out value="${usuarioBean.sexo.sexo}"/>
             <br /><br />
-            <c:if test="${usuario.fechaNacimiento != null}">
+            <c:if test="${usuarioBean.fechaNacimiento != null}">
             <span class="labelPersona">Fecha de nacimiento</span>
-            <fmt:formatDate value="${usuario.fechaNacimiento}" var="fechaNac" pattern="dd-MM-yyyy"/>
+            <fmt:formatDate value="${usuarioBean.fechaNacimiento}" var="fechaNac" pattern="dd-MM-yyyy"/>
             <c:out value="${fechaNac}"/>
             <br /><br />
             </c:if>
-            <c:if test="${!empty usuario.aficiones}">
+            <c:if test="${!empty usuarioBean.aficiones}">
             <span class="labelPersona">Aficiones</span>
-            <c:forEach items="${usuario.aficiones}" var="afic">
-              <c:out value="${afic}"/><br/>
+            <c:forEach items="${usuarioBean.aficiones}" var="afic">
+              <c:out value="${afic.nombre}"/><br/>
             </c:forEach>
             </c:if>
+            <br /><br />
+            <span class="labelPersona">Login</span>
+            <c:out value="${usuarioBean.login}"/>
+            <br /><br />
+            <span class="labelPersona">E-mail</span>
+            <c:out value="${usuarioBean.email}"/>
+            <br /><br />            
         </div>
         </c:if>
-        <c:if test="${usuario == null || empty usuario}">No hay datos del usuario</c:if>
+        <c:if test="${!usuarioBean.esValido()}">No hay datos del usuario</c:if>
         <p><a href="inicio.jsp">página de inicio</a></p>
     </body>
 </html>

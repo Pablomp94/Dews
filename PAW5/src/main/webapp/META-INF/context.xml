@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/paw5">
-    <ResourceLink name="jdbc/tiendaBD"
-                  global="jdbc/derbyTiendaBD"
-                  auth="Container"
-                  type="javax.sql.DataSource" />
+  <ResourceLink auth="Container" global="jdbc/derbyTiendaBD" name="jdbc/tiendaBD" type="javax.sql.DataSource"/>
+  <Resource auth="Container" factory="org.jboss.weld.resources.ManagerObjectFactory" name="BeanManager" type="javax.enterprise.inject.spi.BeanManager"/>
 </Context>

@@ -1,126 +1,80 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 public class Direccion implements Serializable {
-    private static long serialVersionUID = 1L; // versión de la entidad{
     
+    private static final long serialVersionUID = 1L;
+
     private Integer id;
-    private Integer idUsuario;
+    private Integer usuarioId;
     private String direccion;
     private String localidad;
     private String codigoPostal;
     private Provincia provincia;
-    
 
-    public Direccion (Integer id, Integer idUsuario, String direccion, String localidad, String codigoPostal, Provincia provincia){
+    public Direccion() {
+    }
+
+    public Direccion(Integer id, Integer usuarioId, String direccion, String localidad, String codigoPostal, Provincia provincia) {
         this.id = id;
-        this.idUsuario = idUsuario;
+        this.usuarioId = usuarioId;
         this.direccion = direccion;
         this.localidad = localidad;
         this.codigoPostal = codigoPostal;
         this.provincia = provincia;
     }
 
-    public Direccion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    
-    /**
-     * @return the id
-     */
     public Integer getId() {
         return id;
     }
 
-    /**
-     * @param id the id to set
-     */
     public void setId(Integer id) {
         this.id = id;
     }
+    
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
 
-    /**
-     * @return the direccion
-     */
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
     public String getDireccion() {
         return direccion;
     }
 
-    /**
-     * @param direccion the direccion to set
-     */
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 
-    /**
-     * @return the localidad
-     */
     public String getLocalidad() {
         return localidad;
     }
 
-    /**
-     * @param localidad the localidad to set
-     */
     public void setLocalidad(String localidad) {
         this.localidad = localidad;
     }
 
-    /**
-     * @return the codigo_postal
-     */
     public String getCodigoPostal() {
         return codigoPostal;
     }
 
-    /**
-     * @param codigo_postal the codigo_postal to set
-     */
-    public void setCodigoPostal(String codigo_postal) {
-        this.codigoPostal = codigo_postal;
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
     }
 
- 
-
-    /**
-     * @return the idUsuario
-     */
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
-
-    /**
-     * @param idUsuario the idUsuario to set
-     */
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    /**
-     * @return the provincia
-     */
     public Provincia getProvincia() {
         return provincia;
     }
 
-    /**
-     * @param provincia the provincia to set
-     */
     public void setProvincia(Provincia provincia) {
         this.provincia = provincia;
     }
-
-
+   
 }

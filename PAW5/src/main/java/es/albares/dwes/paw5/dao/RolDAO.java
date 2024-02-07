@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package es.albares.dwes.paw5.dao;
 
-import es.albares.dwes.paw5.database.GestorConexion;
+import es.albares.dwes.paw5.basedatos.GestorConexion;
 import es.albares.dwes.paw5.entidades.Rol;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,77 +15,95 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Pablo
+ * @author usuario
  */
 @ApplicationScoped
-public class RolDAO implements EntidadDAOBD<Rol, String> {
-
+public class RolDAO implements EntidadDaoBD<Rol, String>{
+    
     private static final Logger LOGGER = Logger.getLogger(RolDAO.class.getName());
+    
     @Inject
     private GestorConexion gestorCon;
 
     public RolDAO() {
     }
-
+    
+    @Override
     public List<Rol> getAll() throws SQLException {
+        
         String consulta = "select codigo, nombre from rol";
-        List<Rol> rols = new ArrayList<>();
-
+        List<Rol> roles = new ArrayList<>();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement ptm = conn.prepareStatement(consulta);
+            ResultSet rs = ptm.executeQuery();) {
+            while (rs.next()) {
+                Rol rol = new Rol(rs.getString("codigo"), rs.getString("nombre"));
+                roles.add(rol);
+            }            
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error consultando roles", ex);
+            throw ex;
+        }                 
+        return roles;
+    }
+    
+    @Override
+    public Rol getById(String codigo) throws SQLException {
+        
+        String consulta = "select codigo, nombre from rol where codigo = ?";
+        Rol rol = null;
+        
         Connection conn = null;
-        PreparedStatement ptm = null;
+        PreparedStatement pst = null;
         ResultSet rs = null;
         try {
             conn = gestorCon.getConnection();
-            ptm = conn.prepareStatement(consulta);
-            rs = ptm.executeQuery();
-            while (rs.next()) {
-                rols.add(new Rol(rs.getString("codigo"), rs.getString("nombre")));
-            }
+            pst = conn.prepareStatement(consulta);
+            pst.setString(1, codigo);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                rol = new Rol(rs.getString("codigo"), rs.getString("nombre"));
+            }            
         } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error consultando rols", ex);
+            LOGGER.log(Level.SEVERE, "Error consultando roles", ex);
             throw ex;
         } finally {
-            try {
-                rs.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando rols - rs", ex);
+            try { rs.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando roles - cierre rs", ex);
                 throw ex;
             }
-            try {
-                ptm.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando rols - ptm", ex);
+            try { pst.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando roles - cierre ptm", ex);
                 throw ex;
             }
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error consultando rols - conn", ex);
+            try { conn.close(); } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Error consultando roles - cierre conn", ex);
                 throw ex;
             }
-        }
-        return rols;
-    }
-
-    public Rol getById(String codigo) throws SQLException {
-        String consulta = "select codigo, nombre from rol where codigo = ?";
-        Rol rol = null;
-
-        try (Connection conn = gestorCon.getConnection(); PreparedStatement pst = conn.prepareStatement(consulta);) {
-            pst.setString(1, codigo);
-            try (ResultSet rs = pst.executeQuery();) {
-                if (rs.next()) {
-                    rol = new Rol(rs.getString("codigo"), rs.getString("nombre"));
-                }
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, "Error obteniedo rolByCodigo", ex);
-                throw ex;
-            }
-        } catch (SQLException ex) {
-            LOGGER.log(Level.SEVERE, "Error obteniedo rolByCodigo", ex);
-            throw ex;
         }
         return rol;
+    }
+    
+    public List<Rol> getRolesByUsuarioId(Integer usuarioId) throws SQLException {
+        
+        String consulta = "select r.codigo, r.nombre from ROL r join USUARIO_ROL ur on ur.rol_codigo = r.codigo and ur.usuario_id = ?";
+        List<Rol> aficiones = new ArrayList<>();
+        
+        try (Connection conn = gestorCon.getConnection();
+            PreparedStatement pts = conn.prepareStatement(consulta);) {
+            pts.setInt(1, usuarioId);
+            try (ResultSet rs = pts.executeQuery()) {
+                while (rs.next()) {
+                    aficiones.add(new Rol(rs.getString("nombre"), rs.getString("codigo")));
+                }
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.SEVERE, "Error consultando provincias", ex);
+            throw ex;
+        } 
+                
+        return aficiones;
     }
 
     @Override
@@ -106,7 +120,5 @@ public class RolDAO implements EntidadDAOBD<Rol, String> {
     public int delete(Rol t) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-
     
 }
-    
