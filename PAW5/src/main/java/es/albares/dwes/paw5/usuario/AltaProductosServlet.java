@@ -15,14 +15,16 @@ import jakarta.servlet.http.HttpServlet;
 /**
  *
  * @author Pablo
+ * 
  */
+/*
 @WebServlet(name = "/tienda/altaProductos", urlPatterns = {"/tienda/altaProductos"})
 public class AltaProductosServlet extends HttpServlet {
 
         ProductoServices.altaProductos();
     
     
-}
+}*/
 
     
   

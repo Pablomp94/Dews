@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.albares.dwes</groupId>
-    <artifactId>PAW5</artifactId>
+    <artifactId>PAW5JPA-Pablo</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>PAW5JPA-Pablo</name>
@@ -17,21 +17,6 @@
     </properties>
     
     <dependencies>
-        
-        <!-- JPA 3.1 API + IMPLEM -->
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <!-- EclipseLink -->
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>4.0.2</version>
-        </dependency>
-        
-        
         <dependency>
             <groupId>jakarta.platform</groupId>
             <artifactId>jakarta.jakartaee-api</artifactId>
@@ -78,6 +63,18 @@
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-shaded</artifactId>
             <version>5.1.2.Final</version>
+        </dependency>
+        <!-- JPA 3.1 API + IMPLEM -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <!-- EclipseLink -->
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>4.0.2</version>
         </dependency>
     </dependencies>
     
