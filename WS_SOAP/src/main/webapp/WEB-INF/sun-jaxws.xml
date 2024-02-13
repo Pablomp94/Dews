@@ -3,4 +3,9 @@
         name="SaludoWebService"
         implementation="es.albares.dwes.ws.SaludoImpl"
         url-pattern="/saludo"/>
+    <endpoint
+        name="CalculadoraWebService"
+        implementation="es.albares.dwes.ws.Calculadora"
+        url-pattern="/calculadora"/>
 </endpoints>
+
