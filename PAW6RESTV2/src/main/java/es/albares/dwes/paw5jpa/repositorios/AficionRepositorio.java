@@ -4,8 +4,8 @@
  */
 package es.albares.dwes.paw5jpa.repositorios;
 
-import es.albares.dwes.paw5jpa.dao.ProvinciaDAO;
-import es.albares.dwes.paw5jpa.entidades.Provincia;
+import es.albares.dwes.paw5jpa.dao.AficionDAO;
+import es.albares.dwes.paw5jpa.entidades.Aficion;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -18,37 +18,28 @@ import java.util.logging.Logger;
  *
  * @author usuario
  */
-@Named("provinciaRepo")
+@Named("aficionRepo")
 @ApplicationScoped
-public class ProvinciaRepositorio {
+public class AficionRepositorio {
     
     @Inject
-    private ProvinciaDAO provDAO;
-    private static List<Provincia> lstProvincias;
+    private AficionDAO aficDAO;
+    private static List<Aficion> lstAficiones;
     
     private final Object obj = new Object();
 
-    public List<Provincia> getProvincias() {
-        if (lstProvincias == null) {
+    public List<Aficion> getAficiones() {
+        if (lstAficiones == null) {
           synchronized (obj) {
-            if (lstProvincias == null) {
+            if (lstAficiones == null) {
                 try {
-                    lstProvincias = provDAO.getAll();
+                    lstAficiones = aficDAO.getAll();
                 } catch (SQLException ex) {
-                    Logger.getLogger(ProvinciaRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AficionRepositorio.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
           }
         }
-       return lstProvincias;
+       return lstAficiones;
     }
-    
-    /*public Provincia getProvinciaById(String cod){
-        try{
-            return provDao.getById(cod);
-        }catch(){
-            
-        }
-    }*/
-    
 }

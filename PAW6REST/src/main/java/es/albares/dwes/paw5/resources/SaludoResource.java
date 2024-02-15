@@ -5,15 +5,25 @@
 package es.albares.dwes.paw5.resources;
 
 import jakarta.ws.rs.ApplicationPath;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  *
  * @author Pablo
  */
+@Path("/saludo")
 public class SaludoResource {
 
-    @ApplicationPath("/api")
-    public class JakartaRestConfiguration extends Application {
+    @GET
+    @Path("/{nombre}")
+    @Produces(MediaType.TEXT_HTML)
+    public String saludo(@PathParam("nombre") String nombre) {
+        return "Hola " + nombre + "!";
     }
+
 }

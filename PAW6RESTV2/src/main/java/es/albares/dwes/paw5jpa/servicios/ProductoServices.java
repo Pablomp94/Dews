@@ -1,10 +1,8 @@
-package es.albares.dwes.paw5.servicios;
+package es.albares.dwes.paw5jpa.servicios;
 
-import es.albares.dwes.paw5.basedatos.GestorEntityManager;
-import es.albares.dwes.paw5.entidades.Categoria;
-import es.albares.dwes.paw5.entidades.Producto;
-import es.albares.dwes.paw5.basedatos.GestorEntityManager;
 import es.albares.dwes.paw5jpa.basedatos.GestorEntityManager;
+import es.albares.dwes.paw5jpa.entidades.Categoria;
+import es.albares.dwes.paw5jpa.entidades.Producto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -381,4 +379,3 @@ public class ProductoServices {
   
     
 }
-

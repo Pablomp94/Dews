@@ -42,13 +42,4 @@ public class ProvinciaRepositorio {
         }
        return lstProvincias;
     }
-    
-    /*public Provincia getProvinciaById(String cod){
-        try{
-            return provDao.getById(cod);
-        }catch(){
-            
-        }
-    }*/
-    
 }
