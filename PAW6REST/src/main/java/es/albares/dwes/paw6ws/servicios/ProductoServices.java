@@ -1,8 +1,8 @@
-package es.albares.dwes.paw5.servicios;
+package es.albares.dwes.paw6ws.servicios;
 
-import es.albares.dwes.paw5jpa.basedatos.GestorEntityManager;
-import es.albares.dwes.paw5jpa.entidades.Categoria;
-import es.albares.dwes.paw5jpa.entidades.Producto;
+import es.albares.dwes.paw6ws.basedatos.GestorEntityManager;
+import es.albares.dwes.paw6ws.entidades.Categoria;
+import es.albares.dwes.paw6ws.entidades.Producto;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -34,6 +34,33 @@ public class ProductoServices {
         
         return lstProd;
     }
+    
+    // damos de alta los productos desde su carga "local"
+    public void altaProductos() {
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        // damos da alta los productos en BD (si no existen...)
+        entityManager.getTransaction().begin();
+        for (Producto prod : getStaticProducts()) {
+            entityManager.merge(prod);
+        }
+        entityManager.getTransaction().commit();
+        
+        entityManager.close();
+    }    
+    
+    /**
+     * Devuelve el Producto que es identificado por el parámetro Id
+     * @param id
+     * @return 
+     */
+    public Producto getProductoById(String id) {
+        if (id != null) {
+            EntityManager entityManager = GestorEntityManager.getEntityManager();
+            Producto Prod = entityManager.find(Producto.class, id);
+            entityManager.close();
+            return Prod;
+        } else return null;
+    }   
 
     /**
      * obtiene la lista de productos estáticos de ejemplo
@@ -331,51 +358,6 @@ public class ProductoServices {
         
         return lstProductos;
     }
-    
-    // damos de alta los productos desde su carga "local"
-    public void altaProductos() {
-        EntityManager entityManager = GestorEntityManager.getEntityManager();
-        // damos da alta los productos en BD (si no existen...)
-        entityManager.getTransaction().begin();
-        for (Producto prod : getStaticProducts()) {
-            entityManager.merge(prod);
-        }
-        entityManager.getTransaction().commit();
-        
-        entityManager.close();
-    }    
-    
-    /**
-     * Devuelve el Producto que es identificado por el parámetro Id
-     * @param id
-     * @return 
-     */
-    public Producto getProductoById(String id) {
-        if (id != null) {
-            EntityManager entityManager = GestorEntityManager.getEntityManager();
-            Producto Prod = entityManager.find(Producto.class, id);
-            entityManager.close();
-            return Prod;
-        } else return null;
-    }
-    
-    /**
-     * Devuelve lista de Productos que corresponde con la categoria 
-     * @param codigo_cat Codigo de la categoria
-     * @return litado de Productos por categoria
-     */
-    public List<Producto> getProductosByCategoria(String codigo_cat) {
-        if (codigo_cat != null) {
-            EntityManager entityManager = GestorEntityManager.getEntityManager();
-            List<Producto> lstProd = entityManager.createQuery(
-                    "Select distinct p from Producto p join fetch p.categoria c where c.codigo = :codigo_cat", Producto.class)
-                    .setParameter("codigo_cat", codigo_cat)
-                    .getResultList();
-            entityManager.close();
-            return lstProd;
-        } else return null;
-    }
-    
-  
+
     
 }

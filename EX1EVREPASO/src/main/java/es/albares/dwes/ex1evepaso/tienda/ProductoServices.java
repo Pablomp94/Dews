@@ -1,56 +1,41 @@
-package es.albares.dwes.paw5.servicios;
+package es.albares.dwes.ex1evepaso.tienda;
 
-import es.albares.dwes.paw5jpa.basedatos.GestorEntityManager;
-import es.albares.dwes.paw5jpa.entidades.Categoria;
-import es.albares.dwes.paw5jpa.entidades.Producto;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Named;
-import jakarta.persistence.EntityManager;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.HashMap;
 
 /**
  *
  * @author usuario
  */
-@Named("productoServices")
-@ApplicationScoped
 public class ProductoServices {
     
+    private HashMap<String, Producto> mapProductos;
+    
     public ProductoServices() {
+        synchronized (this) {
+            if (mapProductos == null) {
+                init();
+            }
+        }
     }
     
     /**
-     * Devuelve la lista completa de productos de la BD
-     * @return la lista de productos
-     */
+     * Devuelve la lista de productos completa
+     * @return 
+    */
     public Collection<Producto> getProductos() {
-        EntityManager entityManager = GestorEntityManager.getEntityManager();
-        List<Producto> lstProd = entityManager.createQuery("SELECT distinct p from Producto p join fetch p.categoria", Producto.class).getResultList();
-        entityManager.close();
-        
-        return lstProd;
+        return mapProductos.values();
     }
 
     /**
-     * obtiene la lista de productos estáticos de ejemplo
+     * Inicializa la lita de productos con una colección de ejemplo
      */
-    private List<Producto> getStaticProducts() {       
-        // comprueba si se encuentra la Categoría movil en BD
-        EntityManager entityManager = GestorEntityManager.getEntityManager();
-        Categoria catMovil = entityManager.find(Categoria.class, "Movil");
-        entityManager.close();
+    private void init() {
+        mapProductos = new HashMap<>();
         
-        if (catMovil == null) {
-            throw new RuntimeException("no se encuentra la categoría movil en BD");
-        }
-        
-        List<Producto> lstProductos = new ArrayList<>();
-        
-        lstProductos.add(new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W", 
+        mapProductos.put("SamsungGS23", 
+            new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W", 
 """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
@@ -113,10 +98,10 @@ public class ProductoServices {
             </li>
             </ul>
             """,
-            new GregorianCalendar(2023, 0, 1).getTime(), new BigDecimal("749"),
-            catMovil));
+            new GregorianCalendar(2023, 0, 1).getTime(), Float.valueOf("749")));
         
-        lstProductos.add(new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla", 
+        mapProductos.put("SamsungGA54",
+            new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla", 
 """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
@@ -217,10 +202,10 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 5, 1).getTime(), new BigDecimal("469.01"), 
-                    catMovil));
+            new GregorianCalendar(2023, 5, 1).getTime(), Float.valueOf("469.01")));
         
-        lstProductos.add(new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C", 
+        mapProductos.put("OppoFX5",
+            new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C", 
 """                    
             <ul>
             <li><strong>Procesador</strong> Qualcomm Snapdragon 888 5G, 8 núcleos Kryo 680 a 2,84GHz (1 x Cortex X1 a 2,84GHz, 3 x Cortex A78 a 2,84GHz, 4 x Cortex A55 a 1,8GHz)</li>
@@ -282,10 +267,10 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 10, 1).getTime(), new BigDecimal("954.99"),
-                    catMovil));
+            new GregorianCalendar(2023, 10, 1).getTime(), Float.valueOf("954.99")));
         
-        lstProductos.add(new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W", 
+        mapProductos.put("SamsungGZF5",
+            new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W", 
 """                    
             <ul>
             <li><strong>Pantalla</strong>
@@ -326,24 +311,8 @@ public class ProductoServices {
             <li><strong>Otros: </strong>One UI 5.1.1, Compatible con S pen</li>
             <li><strong>Caja: </strong>Cable USB C</li>
             </ul>""",
-            new GregorianCalendar(2023, 7, 12).getTime(), new BigDecimal("2029.90"),
-            catMovil));        
-        
-        return lstProductos;
+            new GregorianCalendar(2023, 7, 12).getTime(), Float.valueOf("2029.90")));        
     }
-    
-    // damos de alta los productos desde su carga "local"
-    public void altaProductos() {
-        EntityManager entityManager = GestorEntityManager.getEntityManager();
-        // damos da alta los productos en BD (si no existen...)
-        entityManager.getTransaction().begin();
-        for (Producto prod : getStaticProducts()) {
-            entityManager.merge(prod);
-        }
-        entityManager.getTransaction().commit();
-        
-        entityManager.close();
-    }    
     
     /**
      * Devuelve el Producto que es identificado por el parámetro Id
@@ -351,31 +320,7 @@ public class ProductoServices {
      * @return 
      */
     public Producto getProductoById(String id) {
-        if (id != null) {
-            EntityManager entityManager = GestorEntityManager.getEntityManager();
-            Producto Prod = entityManager.find(Producto.class, id);
-            entityManager.close();
-            return Prod;
-        } else return null;
+        return mapProductos.get(id);
     }
-    
-    /**
-     * Devuelve lista de Productos que corresponde con la categoria 
-     * @param codigo_cat Codigo de la categoria
-     * @return litado de Productos por categoria
-     */
-    public List<Producto> getProductosByCategoria(String codigo_cat) {
-        if (codigo_cat != null) {
-            EntityManager entityManager = GestorEntityManager.getEntityManager();
-            List<Producto> lstProd = entityManager.createQuery(
-                    "Select distinct p from Producto p join fetch p.categoria c where c.codigo = :codigo_cat", Producto.class)
-                    .setParameter("codigo_cat", codigo_cat)
-                    .getResultList();
-            entityManager.close();
-            return lstProd;
-        } else return null;
-    }
-    
-  
     
 }

@@ -5,12 +5,8 @@
     <persistence-unit name="tienda" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <non-jta-data-source>java:comp/env/jdbc/tiendaBD</non-jta-data-source>
-        <class>es.albares.dwes.paw5jpa.entidades.Categoria</class>
-        <class>es.albares.dwes.paw5jpa.entidades.Producto</class>
-        <class>es.albares.dwes.paw5jpa.entidades.Usuario</class>
-        <class>es.albares.dwes.paw5jpa.entidades.Direccion</class>
-        <class>es.albares.dwes.paw5jpa.entidades.Provincia</class>
-        <class>es.albares.dwes.paw5jpa.entidades.Rol</class>
+        <class>es.albares.dwes.paw6ws.entidades.Categoria</class>
+        <class>es.albares.dwes.paw6ws.entidades.Producto</class>
         <properties>
             <property name="eclipselink.logging.level" value="FINEST"/>
         </properties>

@@ -1,4 +1,4 @@
-package es.albares.dwes.paw5jpa;
+package es.albares.dwes.ex1evrepaso;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
@@ -7,7 +7,7 @@ import jakarta.ws.rs.core.Application;
  * Configures Jakarta RESTful Web Services for the application.
  * @author Juneau
  */
-
-@ApplicationPath("/api")
+@ApplicationPath("resources")
 public class JakartaRestConfiguration extends Application {
+    
 }
