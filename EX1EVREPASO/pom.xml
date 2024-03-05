@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>es.albares.dwes</groupId>
-    <artifactId>EX1EVREPASO</artifactId>
+    <artifactId>EX1EVAL</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>EX1EVREPASO-1.0-SNAPSHOT</name>
+    <name>EX1EVAL-1.0-SNAPSHOT</name>
     
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,7 +17,25 @@
     </properties>
     
     <dependencies>
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JSTL 3.0 -->
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
         
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+        </dependency>  
         
         <!-- CDI 4.0 -->
         <dependency>
@@ -25,25 +43,19 @@
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <version>4.0.1</version>
         </dependency>
+
         <dependency>
             <groupId>org.jboss.weld</groupId>
             <artifactId>weld-core-impl</artifactId>
             <version>5.1.2.Final</version>
         </dependency>
-
+        
         <dependency>
             <groupId>org.jboss.weld.servlet</groupId>
             <artifactId>weld-servlet-shaded</artifactId>
             <version>5.1.2.Final</version>
         </dependency>
         
-        
-        <dependency>
-            <groupId>jakarta.platform</groupId>
-            <artifactId>jakarta.jakartaee-api</artifactId>
-            <version>${jakartaee}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
     
     <build>

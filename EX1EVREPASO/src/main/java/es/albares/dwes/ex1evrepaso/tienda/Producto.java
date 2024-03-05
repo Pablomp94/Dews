@@ -1,4 +1,4 @@
-package es.albares.dwes.ex1evepaso.tienda;
+package es.albares.dwes.ex1evrepaso.tienda;
 
 import java.util.Date;
 

@@ -1,5 +1,7 @@
-package es.albares.dwes.ex1evepaso.tienda;
+package es.albares.dwes.ex1evrepaso.tienda;
 
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,6 +10,9 @@ import java.util.HashMap;
  *
  * @author usuario
  */
+
+@Named("carrito")
+@SessionScoped
 public class CarroProductos implements Serializable {
     
     private final HashMap<String, Integer> mapCarroProductos = new HashMap<>();
@@ -28,6 +33,8 @@ public class CarroProductos implements Serializable {
      * @param id identificador del producto
      * @return 
      */
+    
+    
     public int getCantidadProductoById(String id) {
         return mapCarroProductos.getOrDefault(id, 0);
     }

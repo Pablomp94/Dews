@@ -1,5 +1,7 @@
-package es.albares.dwes.ex1evepaso.tienda;
+package es.albares.dwes.ex1evrepaso.tienda;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -8,6 +10,8 @@ import java.util.HashMap;
  *
  * @author usuario
  */
+@Named("productoServices")
+@ApplicationScoped
 public class ProductoServices {
     
     private HashMap<String, Producto> mapProductos;
@@ -20,10 +24,6 @@ public class ProductoServices {
         }
     }
     
-    /**
-     * Devuelve la lista de productos completa
-     * @return 
-    */
     public Collection<Producto> getProductos() {
         return mapProductos.values();
     }
