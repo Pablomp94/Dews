@@ -1,9 +1,7 @@
-package es.albares.dwes.ex1evrepaso;
+package es.albares.dwes.ex2ev.tienda;
 
-    
-import es.albares.dwes.ex1evrepaso.tienda.CarroProductos;
-import es.albares.dwes.ex1evrepaso.tienda.Producto;
-import es.albares.dwes.ex1evrepaso.tienda.ProductoServices;
+import es.albares.dwes.ex2ev.entidades.Producto;
+import es.albares.dwes.ex2ev.servicios.ProductoServices;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -17,16 +15,11 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author usuario
  */
-@WebServlet(urlPatterns = {"/carro", "/verCarrito"})
-public class CarritoServlet extends HttpServlet {
-       
+@WebServlet("/tienda/producto")
+public class ProductoServlet extends HttpServlet {
+    
     @Inject
     ProductoServices prodServ;
-    
-    // el objeto "carrito" se injecta de un beans al que se le ha definido alcance de "sesión"
-    //  por lo que cada instancia corresponde a un usuario distinto (cada usuario tiene su propio carro de la compra)
-    @Inject
-    CarroProductos carrito;
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,30 +30,19 @@ public class CarritoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
-        // Recuperamos los parámetros necesarios para identificar la acción a realizar y el producto sobre el que se realiza
-        // Estos parámetros los hemos definido en la vista del producto, para el botón de añadir (también se usarán en el carro)
+        // recupera el parámetro "idProducto" que llega en la URL de la petición
         String paramIdProducto = request.getParameter("idProducto");
-        String paramAccion = request.getParameter("accion");
         
-        // intentamos obtener el producto correspondiente al id recibido
+        // recupera el producto asociado al parámetro
         Producto prod = prodServ.getProductoById(paramIdProducto);
         
-        // comprobamos que existe un producto asociado al idProducto (el parámetro es correcto)
         if (prod != null) {
+            // añade el producto recuperado como atributo a la petición, para ser usado en la vista
+            request.setAttribute("producto", prod);
             
-            switch (paramAccion) {
-                case "anyadir" -> carrito.anyadeProducto(paramIdProducto);
-                //case "mucho" -> carrito.anyadeMucho(paramIdProducto);
-                case "substraer" -> carrito.substraeProducto(paramIdProducto);
-                case "borrar" -> carrito.borraProducto(paramIdProducto);
-                default -> throw new AssertionError();
-            }
-        } // else --> si no es correcto el idProducto se debería mostrar una página o mensaje de error
-        
-        // terminamos llevando la ejecución a la vista del carro 
-        RequestDispatcher rd = request.getRequestDispatcher("carroCompra.jsp");
-        rd.forward(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("producto.jsp");
+            rd.forward(request, response);
+        } // else --> se trataría el caso de que el idProducto fuera incorrecto y no correspondiera a ningún producto
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

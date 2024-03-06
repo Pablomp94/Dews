@@ -3,7 +3,6 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <!DOCTYPE html>
-
 <html>
     <head>
         <title>${producto.titulo}</title>
@@ -12,12 +11,12 @@
         <link rel="stylesheet" href="css/estilos.css"/> 
     </head>
     <body>
-        <h1><c:out value="${producto.titulo}"/></h1>
-        <div class="menuSup"><a href="inicio">Ir al inicio</a>&nbsp;&nbsp;<a href="verCarrito">Ver carro de compra</a></div>
-        <form action="carro" method="get">
+        <h1>${producto.titulo}</h1>
+        <div class="menuSup"><a href="../inicio">Ir a inicio</a>&nbsp;&nbsp;<a href="verCarrito">Carro de compra</a></div>
+        <form action="carro" method="post">
         <div class="producto">
             <div class="contenedorProducto contenedorProductodetalle">
-                <span>Fecha lanzamiento: <fmt:formatDate pattern="dd/MM/YYYY" value="${producto.fechaLanzamiento}"/></span>
+                <span>Fecha de lanzamiento: <fmt:formatDate pattern="dd-MM-YYYY" value="${producto.fechaLanzamiento}"></fmt:formatDate></span>
                 <div class="imagenProducto">
                     <img src="${producto.imagenUrl}" alt="foto ${producto.titulo}"/>
                 </div>
@@ -28,11 +27,8 @@
                 <button type="submit" class="botonCarrito">Añadir al carro</button>
                 <input hidden name="idProducto" value="${producto.id}">
                 <input hidden name="accion" value="anyadir">
-                <!--<input hidden name="[completar_]" value="[completar_]">-->
                 <h3>Especificaciones:</h3>
-                <!-- Especificaciones -->
-                ${producto.especificaciones} 
-                <!-- FIN Especificaciones -->
+                ${producto.especificaciones}
             </div>
         </div>
         </form>

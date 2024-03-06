@@ -1,9 +1,7 @@
-package es.albares.dwes.ex1evrepaso;
+package es.albares.dwes.ex2ev.tienda;
 
-    
-import es.albares.dwes.ex1evrepaso.tienda.CarroProductos;
-import es.albares.dwes.ex1evrepaso.tienda.Producto;
-import es.albares.dwes.ex1evrepaso.tienda.ProductoServices;
+import es.albares.dwes.ex2ev.entidades.Producto;
+import es.albares.dwes.ex2ev.servicios.ProductoServices;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -12,21 +10,17 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
  * @author usuario
  */
-@WebServlet(urlPatterns = {"/carro", "/verCarrito"})
-public class CarritoServlet extends HttpServlet {
-       
+@WebServlet(name="ListaProductosServlet", urlPatterns={"/tienda/listaProductos"})
+public class ListaProductosServlet extends HttpServlet {
+    
     @Inject
     ProductoServices prodServ;
-    
-    // el objeto "carrito" se injecta de un beans al que se le ha definido alcance de "sesión"
-    //  por lo que cada instancia corresponde a un usuario distinto (cada usuario tiene su propio carro de la compra)
-    @Inject
-    CarroProductos carrito;
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,29 +31,13 @@ public class CarritoServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+
+        // recupera lista de productos mediante el objeto "productoServices" que es inyectado por CDI (alcance aplicación)
+        List<Producto> lstProd = (List<Producto>) prodServ.getProductos();
+        request.setAttribute("listaProductos", lstProd);
         
-        // Recuperamos los parámetros necesarios para identificar la acción a realizar y el producto sobre el que se realiza
-        // Estos parámetros los hemos definido en la vista del producto, para el botón de añadir (también se usarán en el carro)
-        String paramIdProducto = request.getParameter("idProducto");
-        String paramAccion = request.getParameter("accion");
-        
-        // intentamos obtener el producto correspondiente al id recibido
-        Producto prod = prodServ.getProductoById(paramIdProducto);
-        
-        // comprobamos que existe un producto asociado al idProducto (el parámetro es correcto)
-        if (prod != null) {
-            
-            switch (paramAccion) {
-                case "anyadir" -> carrito.anyadeProducto(paramIdProducto);
-                //case "mucho" -> carrito.anyadeMucho(paramIdProducto);
-                case "substraer" -> carrito.substraeProducto(paramIdProducto);
-                case "borrar" -> carrito.borraProducto(paramIdProducto);
-                default -> throw new AssertionError();
-            }
-        } // else --> si no es correcto el idProducto se debería mostrar una página o mensaje de error
-        
-        // terminamos llevando la ejecución a la vista del carro 
-        RequestDispatcher rd = request.getRequestDispatcher("carroCompra.jsp");
+        // pasa el proceso de resolver la petición a la plantilla "lista_productos.jsp"
+        RequestDispatcher rd = request.getRequestDispatcher("lista_productos.jsp");
         rd.forward(request, response);
     } 
 

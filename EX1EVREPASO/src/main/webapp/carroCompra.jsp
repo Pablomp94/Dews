@@ -13,7 +13,7 @@
     </head>
     <body>
         <div><h1>Carrito de la compra</h1></div>
-        <div class="menuSup"><a href="inicio">Ir al inicio</a>&nbsp;&nbsp;<a href="verCarrito">Ver carro de compra</a>&nbsp;&nbsp;<a href="listaProductos">Listado de productos</a></div>
+        <div class="menuSup"><a href="inicio">Ir al inicio</a>&nbsp;&nbsp;<a href="listaProductos">Listado de productos</a></div>
         <div class="flex-productos">
             <%-- Comprobamos si el carrito tiene productos --%>
             <c:if test="${empty carrito.idProductos}">
@@ -39,25 +39,29 @@
                                 <fmt:formatNumber minIntegerDigits="2" type="currency" currencySymbol="€">${producto.precio}</fmt:formatNumber>
                                 </div>
                             </div>
-                            <div class="contenedorCantidadCarro">
+                                
+                            <div class="contenedorCantidadCarro" style="margin-left: 20px">
                                 <div class="cantidadProducto">
                                 <%-- Cambiamos el valor del parámetro accion para indicar qué se quiere hacer en cada caso con el idProducto --%>
                                 <a href="carro?accion=substraer&idProducto=${idProducto}">[-]</a>
                                 <span class="cantidadProducto">${carrito.getCantidadProductoById(idProducto)}</span>
                                 <a href="carro?accion=anyadir&idProducto=${idProducto}">[+]</a>
+                                
+                                <a style="margin-left: 20px" href="carro?accion=borrar&idProducto=${idProducto}">Borrar</a>
+                                
                             </div>
-                            <div class="borrarProducto">
-                                <a href="carro?accion=borrar&idProducto=${idProducto}">Borrar</a>
-                            </div>						
                         </div>
+                       
                         <div>
                             <c:set var="cantidad" value="${carrito.getCantidadProductoById(idProducto)}"/>
                             <c:set var="precio" value="${producto.precio}"/>
                             <c:set var="total" value=" ${Float.valueOf(cantidad * precio)}"/>
-                            <h2 style="color: red; margin-top:30px">TOTAL: ${total} €</h2>
+                            <c:set var="totalPrecio" value="${Float.valueOf(total + totalPrecio)}"/>
+                            <h2 style="color: red; margin-top:30px; margin-right: 5px;font-size: 20px">Conjunto: <fmt:formatNumber minIntegerDigits="2" type="currency" currencySymbol="€">${total}</fmt:formatNumber></h2>
+                            </div>
                         </div>
-                    </div>
                 </c:forEach>
+                <h2 style="color: Blue; margin-top:5%; ">PRECIO TOTAL DE LA COMPRA: <fmt:formatNumber minIntegerDigits="2" type="currency" currencySymbol="€">${totalPrecio}</fmt:formatNumber></h2>
             </c:if>                
         </div>    
     </body>

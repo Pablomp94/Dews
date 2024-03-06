@@ -1,4 +1,4 @@
-package es.albares.dwes.ex1evrepaso.tienda;
+package es.albares.dwes.ex2ev.entidades;
 
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
@@ -10,7 +10,6 @@ import java.util.HashMap;
  *
  * @author usuario
  */
-
 @Named("carrito")
 @SessionScoped
 public class CarroProductos implements Serializable {
@@ -21,7 +20,7 @@ public class CarroProductos implements Serializable {
     }
     
     /**
-     * Devuelve la lista de Ids de los productos del carro.
+     * Devuelve la lista de productos del carro
      * @return 
      */
     public Collection<String> getIdProductos() {
@@ -33,25 +32,17 @@ public class CarroProductos implements Serializable {
      * @param id identificador del producto
      * @return 
      */
-    
-    
     public int getCantidadProductoById(String id) {
         return mapCarroProductos.getOrDefault(id, 0);
     }
     
     /**
-     * Añade al carro el Producto especificado por su id.
+     * Añade al carro el Producto especificado por su id
      * @param id identificador del producto
      */
     public synchronized void anyadeProducto(String id) {
         mapCarroProductos.put(id, mapCarroProductos.getOrDefault(id, 0) + 1);
     }
-    
-    /*
-    public synchronized void anyadeMucho(String id) {
-        mapCarroProductos.put(id, mapCarroProductos.getOrDefault(id, 0) + 10000);
-    }*/
-    
     
     /**
      * Substrae del carro un Producto especificado por su id.
@@ -67,7 +58,7 @@ public class CarroProductos implements Serializable {
     }
 
     /**
-     * Borra del carro un Producto especificado por su id.
+     * Substrae del carro un Producto especificado por su id.
      * @param id identificador del producto
      */
     public synchronized void borraProducto(String id) {
