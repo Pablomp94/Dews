@@ -3,6 +3,7 @@ package es.albares.dwes.ex2ev.servicios;
 import es.albares.dwes.ex2ev.basedatos.GestorEntityManager;
 import es.albares.dwes.ex2ev.entidades.Categoria;
 import es.albares.dwes.ex2ev.entidades.Producto;
+import es.albares.dwes.ex2ev.entidades.ProductoExistencias;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
@@ -19,22 +20,23 @@ import java.util.List;
 @Named("productoServices")
 @ApplicationScoped
 public class ProductoServices {
-    
+
     public ProductoServices() {
     }
-    
+
     /**
      * Devuelve la lista completa de productos de la BD
+     *
      * @return la lista de productos
      */
     public Collection<Producto> getProductos() {
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager.createQuery("SELECT distinct p from Producto p join fetch p.categoria", Producto.class).getResultList();
         entityManager.close();
-        
+
         return lstProd;
     }
-    
+
     // damos de alta los productos desde su carga "local"
     public void altaProductos() {
         EntityManager entityManager = GestorEntityManager.getEntityManager();
@@ -44,14 +46,15 @@ public class ProductoServices {
             entityManager.merge(prod);
         }
         entityManager.getTransaction().commit();
-        
+
         entityManager.close();
-    }    
-    
+    }
+
     /**
      * Devuelve el Producto que es identificado por el parámetro Id
+     *
      * @param id
-     * @return 
+     * @return
      */
     public Producto getProductoById(String id) {
         if (id != null) {
@@ -59,26 +62,213 @@ public class ProductoServices {
             Producto Prod = entityManager.find(Producto.class, id);
             entityManager.close();
             return Prod;
-        } else return null;
-    }   
+        } else {
+            return null;
+        }
+    }
 
+    /**
+     * Damos de alta un producto
+     * NOTA: merge=update remove=delete persist=insert
+     */
+    public String insertProducto(Producto prod) {
+        
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        
+        // damos da alta un producto en BD
+        try{
+            entityManager.getTransaction().begin();
+            entityManager.persist(prod);
+            entityManager.getTransaction().commit();
+        }catch(Exception ex){
+            if(entityManager.getTransaction() != null 
+                    && entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+                entityManager.close();
+            }throw ex;
+        }
+        entityManager.close();
+        return prod.getId();
+    }
+
+    
+    
+    /**
+     * Actualizamos un producto
+     * NOTA: merge=update remove=delete persist=insert
+     */
+    public int updateProducto(Producto prod) {
+        
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        
+        // actualizamos un producto en BD
+        try{
+            entityManager.getTransaction().begin();
+            entityManager.merge(prod);
+            entityManager.getTransaction().commit();
+        }catch(Exception ex){
+            if(entityManager.getTransaction() != null 
+                    && entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+                entityManager.close();
+            }throw ex;
+        }
+        entityManager.close();
+        return 1;
+    }
+    
+    
+    
+    /**
+     * Borramos un producto a partir de su identificador
+     * NOTA: merge=update remove=delete persist=insert
+     */
+    public int deleteProducto(String idProd) {
+        
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        
+        // actualizamos un producto en BD
+        try{
+            // Primero recupero el producto
+            Producto prod = entityManager.find(Producto.class, idProd);
+            if(prod != null){
+                entityManager.getTransaction().begin();
+                entityManager.remove(prod);
+                entityManager.getTransaction().commit();
+            }else{
+                entityManager.close();
+                return 0;
+            }
+        }catch(Exception ex){
+            if(entityManager.getTransaction() != null 
+                    && entityManager.getTransaction().isActive()){
+                entityManager.getTransaction().rollback();
+            }throw ex;
+        }
+        entityManager.close();
+        return 1;
+    }
+    
+    
+    
+    
+    /**
+     * Devuelve la lista completa de productos de la BD a partir de su categoria
+     *
+     * @return la lista de productos
+     */
+    public Collection<Producto> getProductosByCategoria(String codCateg) {
+        String consulta ="SELECT distinct p from Producto p join fetch p.categoria "
+                + "WHERE p.categoria.codigo = :codigo";
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        List<Producto> lstProd = entityManager
+                .createQuery(consulta ,Producto.class)
+                .setParameter("codigo", codCateg)
+                .getResultList();
+        entityManager.close();
+
+        return lstProd;
+    }
+
+    
+    
+    /**
+     * Devuelve la lista completa de productos de la BD de los cuales tengan existencias
+     *
+     * @return la lista de productos
+     */
+    public Collection<Producto> getProductosEnStock() {
+        String consulta ="SELECT distinct p from Producto join fetch p.existencias"
+                + "WHERE p.existencias.cantidad > 0";
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        List<Producto> lstProd = entityManager
+                .createQuery(consulta ,Producto.class)
+                .getResultList();
+        entityManager.close();
+
+        return lstProd;
+    }
+    
+     /**
+     * Devuelve la lista completa de productos de la BD de los cuales tengan existencias
+     * y de una categoria en concreto
+     *
+     * @return la lista de productos
+     */
+    public Collection<Producto> getProductosByCategoriaEnStock(String codigoCategoria) {
+        //El distinct es un filtro para que no recoja productos repetidos
+        String consulta ="SELECT distinct p from Producto join fetch p.categoria join fetch p.existencias"
+                + "WHERE p.existencias.cantidad > 0 and p.categoria.codigo = :codigo";
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        List<Producto> lstProd = entityManager
+                .createQuery(consulta ,Producto.class)
+                .setParameter("codigo", codigoCategoria)
+                .getResultList();
+        entityManager.close();
+
+        return lstProd;
+    }
+    
+    
+    
+    
+    /**
+     * Devuelve la cantidad dde existencias del producto "idProd"
+     * tras incrementarlo en "cantidad"
+     * 
+     * @return numero de existencias del producto o -1 si no hay productos
+     */
+    public int incrementa(String idProd, int cantidad) {
+        
+        if(idProd == null){
+            return -1;
+        }
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        Producto prod = entityManager.find(Producto.class, idProd);
+        
+        if(prod == null) {
+            return -1;
+        }
+        
+        ProductoExistencias prodExist = prod.getExistencias();
+        
+        if(prodExist != null){
+            prodExist.setCantidad(prodExist.getCantidad() + cantidad);
+        }
+        
+        //Si no existen hay que crearlas y mantener la relación Producto
+        
+        for (Producto prod : getStaticProducts()) {
+            entityManager.merge(prod);
+        }
+        entityManager.getTransaction().commit();
+
+        entityManager.close();
+        
+        return -1;
+    }
+    
+    
+    
+    
+    
     /**
      * obtiene la lista de productos estáticos de ejemplo
      */
-    private List<Producto> getStaticProducts() {       
+    private List<Producto> getStaticProducts() {
         // comprueba si se encuentra la Categoría movil en BD
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         Categoria catMovil = entityManager.find(Categoria.class, "Movil");
         entityManager.close();
-        
+
         if (catMovil == null) {
             throw new RuntimeException("no se encuentra la categoría movil en BD");
         }
-        
+
         List<Producto> lstProductos = new ArrayList<>();
-        
-        lstProductos.add(new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W", 
-"""                    
+
+        lstProductos.add(new Producto("SamsungGS23", "Samsung", "Galaxy S23", "imagenes/1473-samsung-galaxy-s23-256gb-algodon-libre-cargador-25w.webp", "256GB Algodón Libre + cargador 25W",
+                """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
             <li><strong>Procesador</strong> Qualcomm Snapdragon 8, Gen 2 Octa-Core (3.36GHz, 2.8GHz, 2GHz)</li>
@@ -140,11 +330,11 @@ public class ProductoServices {
             </li>
             </ul>
             """,
-            new GregorianCalendar(2023, 0, 1).getTime(), new BigDecimal("749"),
-            catMovil));
-        
-        lstProductos.add(new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla", 
-"""                    
+                new GregorianCalendar(2023, 0, 1).getTime(), new BigDecimal("749"),
+                catMovil));
+
+        lstProductos.add(new Producto("SamsungGA54", "Samsung", "Galaxy A54", "imagenes/1904-samsung-galaxy-a54-5g-8-128gb-negro-libre-protector-pantalla.webp", "5G 8/256GB Negro Libre + Protector Pantalla",
+                """                    
             <ul>
             <li><strong>Sistema operativo</strong> Android 13</li>
             <li><strong>Procesador</strong> Exynos 1380 Octa-Core (2.4GHz, 2GHz)</li>
@@ -244,11 +434,11 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 5, 1).getTime(), new BigDecimal("469.01"), 
-                    catMovil));
-        
-        lstProductos.add(new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C", 
-"""                    
+                new GregorianCalendar(2023, 5, 1).getTime(), new BigDecimal("469.01"),
+                catMovil));
+
+        lstProductos.add(new Producto("OppoFX5", "Oppo", "Find X5", "imagenes/1131-oppo-find-x5-5g-8-256gb-blanco-libre-cable-usb-31-type-c.webp", "5G 8/256GB Blanco Libre + Cable USB 3.1 Type-C",
+                """                    
             <ul>
             <li><strong>Procesador</strong> Qualcomm Snapdragon 888 5G, 8 núcleos Kryo 680 a 2,84GHz (1 x Cortex X1 a 2,84GHz, 3 x Cortex A78 a 2,84GHz, 4 x Cortex A55 a 1,8GHz)</li>
             <li><strong>Pantalla </strong>6.5" AMOLED, 10 bits, 120 Hz</li>
@@ -309,11 +499,11 @@ public class ProductoServices {
             </ul>
             </li>
             </ul>""",
-            new GregorianCalendar(2023, 10, 1).getTime(), new BigDecimal("954.99"),
-                    catMovil));
-        
-        lstProductos.add(new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W", 
-"""                    
+                new GregorianCalendar(2023, 10, 1).getTime(), new BigDecimal("954.99"),
+                catMovil));
+
+        lstProductos.add(new Producto("SamsungGZF5", "Samsung", "Galaxy Z Fold5", "imagenes/1593-samsung-galaxy-z-fold5-12-512gb-azul-glaciar-cargador-de-pared-25w-foto.webp", "12/512GB Azul Glaciar + Cargador de Pared 25W",
+                """                    
             <ul>
             <li><strong>Pantalla</strong>
             <ul>
@@ -353,11 +543,10 @@ public class ProductoServices {
             <li><strong>Otros: </strong>One UI 5.1.1, Compatible con S pen</li>
             <li><strong>Caja: </strong>Cable USB C</li>
             </ul>""",
-            new GregorianCalendar(2023, 7, 12).getTime(), new BigDecimal("2029.90"),
-            catMovil));        
-        
+                new GregorianCalendar(2023, 7, 12).getTime(), new BigDecimal("2029.90"),
+                catMovil));
+
         return lstProductos;
     }
 
-    
 }
