@@ -216,6 +216,8 @@ public class ProductoServices {
      * Devuelve la cantidad dde existencias del producto "idProd"
      * tras incrementarlo en "cantidad"
      * 
+     * @param idProd
+     * @param cantidad
      * @return numero de existencias del producto o -1 si no hay productos
      */
     public int incrementa(String idProd, int cantidad) {
@@ -247,6 +249,58 @@ public class ProductoServices {
         
         return -1;
     }
+    
+    
+    
+    
+    
+    /**
+     * Devuelve la cantidad dde existencias del producto "idProd"
+     * tras decrementarlo en "cantidad", no permitir operaciones con resultados negativos
+     * 
+     * @param idProd
+     * @param cantidad
+     * @return numero de existencias del producto o -1 si no hay productos
+     */
+    public int decrementa(String idProd, int cantidad) {
+        
+        if(idProd == null){
+            return -1;
+        }
+        EntityManager entityManager = GestorEntityManager.getEntityManager();
+        Producto prod = entityManager.find(Producto.class, idProd);
+        
+        if(prod == null) {
+            return -1;
+        }
+        
+        ProductoExistencias prodExist = prod.getExistencias();
+        
+        if(prodExist != null){
+            if((prodExist.getCantidad() - cantidad) >= 0){
+                prodExist.setCantidad(prodExist.getCantidad() - cantidad);
+            }else{
+                return -1;
+            }
+        }
+        
+        //Si no existen hay que crearlas y mantener la relación Producto
+        
+        for (Producto prod : getStaticProducts()) {
+            entityManager.merge(prod);
+        }
+        entityManager.getTransaction().commit();
+
+        entityManager.close();
+        
+        return -1;
+    }
+    
+    
+    
+    
+    
+    
     
     
     
