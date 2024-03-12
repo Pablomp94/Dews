@@ -68,101 +68,95 @@ public class ProductoServices {
     }
 
     /**
-     * Damos de alta un producto
-     * NOTA: merge=update remove=delete persist=insert
+     * Damos de alta un producto NOTA: merge=update remove=delete persist=insert
      */
     public String insertProducto(Producto prod) {
-        
+
         EntityManager entityManager = GestorEntityManager.getEntityManager();
-        
+
         // damos da alta un producto en BD
-        try{
+        try {
             entityManager.getTransaction().begin();
             entityManager.persist(prod);
             entityManager.getTransaction().commit();
-        }catch(Exception ex){
-            if(entityManager.getTransaction() != null 
-                    && entityManager.getTransaction().isActive()){
+        } catch (Exception ex) {
+            if (entityManager.getTransaction() != null
+                    && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.close();
-            }throw ex;
+            }
+            throw ex;
         }
         entityManager.close();
         return prod.getId();
     }
 
-    
-    
     /**
-     * Actualizamos un producto
-     * NOTA: merge=update remove=delete persist=insert
+     * Actualizamos un producto NOTA: merge=update remove=delete persist=insert
      */
     public int updateProducto(Producto prod) {
-        
+
         EntityManager entityManager = GestorEntityManager.getEntityManager();
-        
+
         // actualizamos un producto en BD
-        try{
+        try {
             entityManager.getTransaction().begin();
             entityManager.merge(prod);
             entityManager.getTransaction().commit();
-        }catch(Exception ex){
-            if(entityManager.getTransaction() != null 
-                    && entityManager.getTransaction().isActive()){
+        } catch (Exception ex) {
+            if (entityManager.getTransaction() != null
+                    && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
                 entityManager.close();
-            }throw ex;
+            }
+            throw ex;
         }
         entityManager.close();
         return 1;
     }
-    
-    
-    
+
     /**
-     * Borramos un producto a partir de su identificador
-     * NOTA: merge=update remove=delete persist=insert
+     * Borramos un producto a partir de su identificador NOTA: merge=update
+     * remove=delete persist=insert
      */
     public int deleteProducto(String idProd) {
-        
+
         EntityManager entityManager = GestorEntityManager.getEntityManager();
-        
+
         // actualizamos un producto en BD
-        try{
+        try {
             // Primero recupero el producto
             Producto prod = entityManager.find(Producto.class, idProd);
-            if(prod != null){
+            if (prod != null) {
                 entityManager.getTransaction().begin();
                 entityManager.remove(prod);
                 entityManager.getTransaction().commit();
-            }else{
+            } else {
                 entityManager.close();
                 return 0;
             }
-        }catch(Exception ex){
-            if(entityManager.getTransaction() != null 
-                    && entityManager.getTransaction().isActive()){
+        } catch (Exception ex) {
+            if (entityManager.getTransaction() != null
+                    && entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
-            }throw ex;
+            }
+            throw ex;
         }
         entityManager.close();
         return 1;
     }
-    
-    
-    
-    
+
     /**
      * Devuelve la lista completa de productos de la BD a partir de su categoria
      *
      * @return la lista de productos
      */
     public Collection<Producto> getProductosByCategoria(String codCateg) {
-        String consulta ="SELECT distinct p from Producto p join fetch p.categoria "
+        String consulta = "SELECT distinct p from Producto p join fetch p.categoria "
                 + "WHERE p.categoria.codigo = :codigo";
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager
-                .createQuery(consulta ,Producto.class)
+                .createQuery(consulta, Producto.class)
                 .setParameter("codigo", codCateg)
                 .getResultList();
         entityManager.close();
@@ -170,142 +164,139 @@ public class ProductoServices {
         return lstProd;
     }
 
-    
-    
     /**
-     * Devuelve la lista completa de productos de la BD de los cuales tengan existencias
+     * Devuelve la lista completa de productos de la BD de los cuales tengan
+     * existencias
      *
      * @return la lista de productos
      */
     public Collection<Producto> getProductosEnStock() {
-        String consulta ="SELECT distinct p from Producto join fetch p.existencias"
+        String consulta = "SELECT distinct p from Producto join fetch p.existencias"
                 + "WHERE p.existencias.cantidad > 0";
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager
-                .createQuery(consulta ,Producto.class)
+                .createQuery(consulta, Producto.class)
                 .getResultList();
         entityManager.close();
 
         return lstProd;
     }
-    
-     /**
-     * Devuelve la lista completa de productos de la BD de los cuales tengan existencias
-     * y de una categoria en concreto
+
+    /**
+     * Devuelve la lista completa de productos de la BD de los cuales tengan
+     * existencias y de una categoria en concreto
      *
      * @return la lista de productos
      */
     public Collection<Producto> getProductosByCategoriaEnStock(String codigoCategoria) {
         //El distinct es un filtro para que no recoja productos repetidos
-        String consulta ="SELECT distinct p from Producto join fetch p.categoria join fetch p.existencias"
+        String consulta = "SELECT distinct p from Producto join fetch p.categoria join fetch p.existencias"
                 + "WHERE p.existencias.cantidad > 0 and p.categoria.codigo = :codigo";
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager
-                .createQuery(consulta ,Producto.class)
+                .createQuery(consulta, Producto.class)
                 .setParameter("codigo", codigoCategoria)
                 .getResultList();
         entityManager.close();
 
         return lstProd;
     }
-    
-    
-    
-    
+
     /**
-     * Devuelve la cantidad dde existencias del producto "idProd"
-     * tras incrementarlo en "cantidad"
-     * 
+     * Devuelve la cantidad dde existencias del producto "idProd" tras
+     * incrementarlo en "cantidad"
+     *
      * @param idProd
      * @param cantidad
      * @return numero de existencias del producto o -1 si no hay productos
      */
     public int incrementa(String idProd, int cantidad) {
-        
-        if(idProd == null){
+
+        if (idProd == null) {
             return -1;
         }
         EntityManager entityManager = GestorEntityManager.getEntityManager();
-        Producto prod = entityManager.find(Producto.class, idProd);
-        
-        if(prod == null) {
+        try {
+            Producto prod = entityManager.find(Producto.class, idProd);
+
+            if (prod == null) {
+                return -1;
+            }
+
+            ProductoExistencias prodExist = prod.getExistencias();
+
+            if (prodExist != null) {
+                prodExist.setCantidad(prodExist.getCantidad() + cantidad);
+            } else {
+
+                //Si no existen existencias hay que crearlas y mantener la relación Producto <-> ProductoExistencias
+                prodExist = new ProductoExistencias(prod, cantidad);
+                prod.setExistencias(prodExist);
+                entityManager.persist(prodExist);
+            }
+            entityManager.getTransaction().commit();
+
+            entityManager.close();
+
+            //TODO devolver cantidad
+            return prod.getExistencias().getCantidad();
+
+            /*
+         entityManager = GestorEntityManager.getEntityManager();
+         prod = entityManager.find(Producto.class, idProd);
+         
+         if(prod.getExistencias() == null){
+             System.out.println("Es nulo" + prod.getExistencias());
+         }else{
+             System.out.println("No es nulo" + prod.getExistencias());
+         }
+             */
+        } catch (Exception ex) {
             return -1;
         }
-        
-        ProductoExistencias prodExist = prod.getExistencias();
-        
-        if(prodExist != null){
-            prodExist.setCantidad(prodExist.getCantidad() + cantidad);
-        }
-        
-        //Si no existen hay que crearlas y mantener la relación Producto
-        
-        for (Producto prod : getStaticProducts()) {
-            entityManager.merge(prod);
-        }
-        entityManager.getTransaction().commit();
 
-        entityManager.close();
-        
-        return -1;
     }
-    
-    
-    
-    
-    
+
     /**
-     * Devuelve la cantidad dde existencias del producto "idProd"
-     * tras decrementarlo en "cantidad", no permitir operaciones con resultados negativos
-     * 
+     * Devuelve la cantidad dde existencias del producto "idProd" tras
+     * decrementarlo en "cantidad", no permitir operaciones con resultados
+     * negativos
+     *
      * @param idProd
      * @param cantidad
      * @return numero de existencias del producto o -1 si no hay productos
      */
     public int decrementa(String idProd, int cantidad) {
-        
-        if(idProd == null){
+
+        if (idProd == null) {
             return -1;
         }
         EntityManager entityManager = GestorEntityManager.getEntityManager();
-        Producto prod = entityManager.find(Producto.class, idProd);
-        
-        if(prod == null) {
-            return -1;
-        }
-        
-        ProductoExistencias prodExist = prod.getExistencias();
-        
-        if(prodExist != null){
-            if((prodExist.getCantidad() - cantidad) >= 0){
-                prodExist.setCantidad(prodExist.getCantidad() - cantidad);
-            }else{
+        try {
+            ProductoExistencias prodExist = entityManager.find(ProductoExistencias.class, idProd);
+
+            if (prodExist == null) {
                 return -1;
             }
-        }
-        
-        //Si no existen hay que crearlas y mantener la relación Producto
-        
-        for (Producto prod : getStaticProducts()) {
-            entityManager.merge(prod);
-        }
-        entityManager.getTransaction().commit();
 
-        entityManager.close();
-        
-        return -1;
+            //Compruebo si la cantidad final es positiva//
+            if ((prodExist.getCantidad() - cantidad) >= 0) {
+                prodExist.setCantidad(prodExist.getCantidad() - cantidad);
+                entityManager.persist(prodExist);
+                entityManager.getTransaction().commit();
+            }
+
+            entityManager.close();
+
+            //TODO devolver cantidad
+            return prodExist.getCantidad();
+            
+        } catch (Exception ex) {
+            return -1;
+        }
+
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /**
      * obtiene la lista de productos estáticos de ejemplo
      */

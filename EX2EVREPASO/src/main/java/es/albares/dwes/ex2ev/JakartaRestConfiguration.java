@@ -1,4 +1,4 @@
-package es.albares.dwes.paw6ws;
+package es.albares.dwes.ex2ev;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;

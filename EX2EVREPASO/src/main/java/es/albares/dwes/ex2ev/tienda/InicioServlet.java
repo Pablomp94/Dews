@@ -28,6 +28,11 @@ public class InicioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        
+        
+        //prodServ.incrementa("OppoFX5, 10");
+        
+        
         // devuelve una redirección a la página inicio.html
         response.sendRedirect("usuario/inicio.jsp");
     } 
