@@ -49,7 +49,7 @@ public class ProductoResources {
     
     @GET
     @Path("/cat/{cat_codigo}")
-    public List<Producto> getProductosByCodCat (@PathParam("car_codigo") String codCat){
+    public List<Producto> getProductosByCodCat (@PathParam("cat_codigo") String codCat){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try{
             return (List<Producto>) prodServ.getProductosByCategoria(codCat);

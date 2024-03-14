@@ -38,7 +38,7 @@ public class Producto implements Serializable  {
     
     @OneToOne(mappedBy = "producto", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private ProductoExistencias existencias = new ProductoExistencias();
+    private ProductoExistencias existencias; 
 
     public Producto() {}
     
@@ -53,6 +53,8 @@ public class Producto implements Serializable  {
         this.precio = precio;
         this.categoria = cat;
     }
+    
+    
     
     public String getId() {
         return id;
