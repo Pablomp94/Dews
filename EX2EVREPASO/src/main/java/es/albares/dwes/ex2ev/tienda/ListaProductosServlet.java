@@ -1,6 +1,8 @@
 package es.albares.dwes.ex2ev.tienda;
 
+import es.albares.dwes.ex2ev.entidades.Categoria;
 import es.albares.dwes.ex2ev.entidades.Producto;
+import es.albares.dwes.ex2ev.servicios.CategoriaServices;
 import es.albares.dwes.ex2ev.servicios.ProductoServices;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
@@ -22,6 +24,9 @@ public class ListaProductosServlet extends HttpServlet {
     @Inject
     ProductoServices prodServ;
    
+    @Inject
+    CategoriaServices catServ;
+    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -35,6 +40,11 @@ public class ListaProductosServlet extends HttpServlet {
         // recupera lista de productos mediante el objeto "productoServices" que es inyectado por CDI (alcance aplicación)
         List<Producto> lstProd = (List<Producto>) prodServ.getProductos();
         request.setAttribute("listaProductos", lstProd);
+        
+        List<Categoria> lstCat = (List<Categoria>) catServ.getCategorias();
+        request.setAttribute("listaCategoria", lstCat);
+        
+        
         
         // pasa el proceso de resolver la petición a la plantilla "lista_productos.jsp"
         RequestDispatcher rd = request.getRequestDispatcher("lista_productos.jsp");

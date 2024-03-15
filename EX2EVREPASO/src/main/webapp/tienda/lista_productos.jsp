@@ -14,6 +14,17 @@
     <body>
         <div><h1>Listado de productos</h1></div>
         <div class="menuSup"><a href="../inicio">Ir a inicio</a>&nbsp;&nbsp;<a href="verCarrito">Carro de compra</a></div>
+        <form method="GET" action="listaProductos">
+            <label for="selCategoria">Categorias:</label>
+            <select id="selCategoria" name="categoria">
+                
+                <option value=""></option>
+                <option value="----">__Lista de Categorias__</option>
+            </select>
+            <input type="checkbox" name="stock" value="S" aria-label="Solo productos en existencias">&nbsp;Stock
+            <button type="submit">Filtrar</button>
+            <br>                
+        </form>
         <div class="grid-productos">
             <c:forEach var="producto" items="${listaProductos}">
             <div class="producto">
