@@ -190,7 +190,7 @@ public class ProductoServices {
      */
     public Collection<Producto> getProductosByCategoriaEnStock(String codigoCategoria) {
         //El distinct es un filtro para que no recoja productos repetidos
-        String consulta = "SELECT distinct p from Producto join fetch p.categoria join fetch p.existencias"
+        String consulta = "SELECT distinct p from Producto join fetch p.categoria join fetch p.existencias "
                 + "WHERE p.existencias.cantidad > 0 and p.categoria.codigo = :codigo";
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager

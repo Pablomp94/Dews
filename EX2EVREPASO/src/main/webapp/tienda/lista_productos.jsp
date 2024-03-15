@@ -34,9 +34,14 @@
                         <div class="imagen">
                             <img src="${producto.imagenUrl}" alt="foto ${producto.titulo}"/>
                         </div>
+                        
+                            <c:if test="${lstDestacados.contains(producto.id)}">
+                            <div class="recomendado">&nbsp;<span>RECOMENDADO!!</span></div>
+                            </c:if>
                         <div class="titulo">
                             <c:out value="${producto.titulo}"/>
                         </div>
+                        
                             <div class="precio"><fmt:formatNumber minIntegerDigits="2" type="currency" currencySymbol="€">${producto.precio}</fmt:formatNumber></div>
                             <div>
                                 <c:if test="${producto.numeroExistencias == 0}">Sin Stock</c:if>

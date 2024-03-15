@@ -4,6 +4,8 @@ import es.albares.dwes.ex2ev.entidades.Categoria;
 import es.albares.dwes.ex2ev.entidades.Producto;
 import es.albares.dwes.ex2ev.servicios.CategoriaServices;
 import es.albares.dwes.ex2ev.servicios.ProductoServices;
+import es.albares.dwes.ws.cliente.generated.ProductosDestacadosWS;
+import es.albares.dwes.ws.cliente.generated.ProductosDestacadosWebService;
 import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -37,6 +39,17 @@ public class ListaProductosServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 
+        
+        ProductosDestacadosWebService pdws = new ProductosDestacadosWebService();
+        ProductosDestacadosWS pd = pdws.getProductosDestacadosWSPort();
+        List<String> lstDestacados = pd.destacados();
+        
+        request.setAttribute("listaDestacados", lstDestacados);
+        
+        
+        
+        
+        
         //Comprobamos los parametros: "categoria" y "stock" del formulario de listaProductos
         String paramCateg = request.getParameter("categoria");
         String paramStock = request.getParameter("stock");
