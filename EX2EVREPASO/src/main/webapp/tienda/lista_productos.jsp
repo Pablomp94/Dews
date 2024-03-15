@@ -26,6 +26,10 @@
                             <c:out value="${producto.titulo}"/>
                         </div>
                             <div class="precio"><fmt:formatNumber minIntegerDigits="2" type="currency" currencySymbol="€">${producto.precio}</fmt:formatNumber></div>
+                            <div>
+                                <c:if test="${producto.numeroExistencias == 0}">Sin Stock</c:if>
+                                <c:if test="${producto.numeroExistencias > 0}">${producto.numeroExistencias} Disponibles</c:if>
+                            </div>
                     </div>
                 </a>
             </div>
