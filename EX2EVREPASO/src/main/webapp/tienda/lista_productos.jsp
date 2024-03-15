@@ -35,7 +35,7 @@
                             <img src="${producto.imagenUrl}" alt="foto ${producto.titulo}"/>
                         </div>
                         
-                            <c:if test="${lstDestacados.contains(producto.id)}">
+                            <c:if test="${listaDestacados.contains(producto.id)}">
                             <div class="recomendado">&nbsp;<span>RECOMENDADO!!</span></div>
                             </c:if>
                         <div class="titulo">
