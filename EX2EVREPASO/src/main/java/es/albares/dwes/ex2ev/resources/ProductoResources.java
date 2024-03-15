@@ -102,7 +102,7 @@ public class ProductoResources {
     @PUT
     @Path("/{id_producto}/inc/{cantidad}")
    
-    public Integer incrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
+    public Integer  incrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
             return prodServ.incrementa(id_producto, cant);
@@ -118,7 +118,7 @@ public class ProductoResources {
     @PUT
     @Path("/{id_producto}/dec/{cantidad}")
    
-    public Integer decrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
+    public Integer decrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
             return prodServ.decrementa(id_producto, cant);
