@@ -210,7 +210,7 @@ public class ProductoServices {
      * @param cantidad
      * @return numero de existencias del producto o -1 si no hay productos
      */
-    public int incrementa(String idProd, int cantidad) {
+    public int incrementa(String idProd, int cant) {
 
         if (idProd == null) {
             return -1;
@@ -226,11 +226,11 @@ public class ProductoServices {
             ProductoExistencias prodExist = prod.getExistencias();
 
             if (prodExist != null) {
-                prodExist.setCantidad(prodExist.getCantidad() + cantidad);
+                prodExist.setCantidad(prodExist.getCantidad() + cant);
             } else {
 
                 //Si no existen existencias hay que crearlas y mantener la relación Producto <-> ProductoExistencias
-                prodExist = new ProductoExistencias(prod, cantidad);
+                prodExist = new ProductoExistencias(prod, cant);
                 prod.setExistencias(prodExist);
                 entityManager.persist(prodExist);
             }
@@ -266,7 +266,7 @@ public class ProductoServices {
      * @param cantidad
      * @return numero de existencias del producto o -1 si no hay productos
      */
-    public int decrementa(String idProd, int cantidad) {
+    public int decrementa(String idProd, int cant) {
 
         if (idProd == null) {
             return -1;
@@ -280,8 +280,8 @@ public class ProductoServices {
             }
 
             //Compruebo si la cantidad final es positiva//
-            if ((prodExist.getCantidad() - cantidad) >= 0) {
-                prodExist.setCantidad(prodExist.getCantidad() - cantidad);
+            if ((prodExist.getCantidad() - cant) >= 0) {
+                prodExist.setCantidad(prodExist.getCantidad() - cant);
                 entityManager.persist(prodExist);
                 entityManager.getTransaction().commit();
             }

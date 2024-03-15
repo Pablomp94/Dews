@@ -17,9 +17,10 @@
         <form method="GET" action="listaProductos">
             <label for="selCategoria">Categorias:</label>
             <select id="selCategoria" name="categoria">
-                
                 <option value=""></option>
-                <option value="----">__Lista de Categorias__</option>
+                <c:forEach items="${listaCategorias}" var="categoria">
+                <option value"${categoria.codigo}">${categoria.nombre}</option>
+                </c:forEach>
             </select>
             <input type="checkbox" name="stock" value="S" aria-label="Solo productos en existencias">&nbsp;Stock
             <button type="submit">Filtrar</button>

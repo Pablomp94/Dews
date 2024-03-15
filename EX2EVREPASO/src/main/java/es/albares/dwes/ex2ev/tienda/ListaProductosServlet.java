@@ -37,12 +37,32 @@ public class ListaProductosServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
 
-        // recupera lista de productos mediante el objeto "productoServices" que es inyectado por CDI (alcance aplicación)
-        List<Producto> lstProd = (List<Producto>) prodServ.getProductos();
+        //Comprobamos los parametros: "categoria" y "stock" del formulario de listaProductos
+        String paramCateg = request.getParameter("categoria");
+        String paramStock = request.getParameter("stock");
+        
+        //Recupera la lista Productos
+        List<Producto> lstProd;
+        
+        if(paramCateg != null && !paramCateg.isBlank()){ //Llega una categoria
+            if("S".equals(paramStock)){//Solo produtos con existencias
+                lstProd = (List<Producto>) prodServ.getProductosByCategoriaEnStock(paramCateg);
+            }else{
+                lstProd = (List<Producto>) prodServ.getProductosByCategoria(paramCateg);
+            }
+        }else{//No llega categoria
+            if("S".equals(paramStock)){//Solo produtos con existencias
+                lstProd = (List<Producto>) prodServ.getProductosEnStock();
+            }else{
+                lstProd = (List<Producto>) prodServ.getProductos();
+            }
+        }
+
         request.setAttribute("listaProductos", lstProd);
         
+        //Obtengo la lista de Categorias y las paso como atributo para la vista
         List<Categoria> lstCat = (List<Categoria>) catServ.getCategorias();
-        request.setAttribute("listaCategoria", lstCat);
+        request.setAttribute("listaCategorias", lstCat);
         
         
         
