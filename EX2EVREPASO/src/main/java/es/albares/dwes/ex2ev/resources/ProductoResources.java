@@ -62,11 +62,11 @@ public class ProductoResources {
     // devuelve el codigo del producto
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public String insertProducto(Producto prod){
+    public String insertProducto(Producto producto){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            prodServ.insertProducto(prod);
-            return prod.getId();
+            prodServ.insertProducto(producto);
+            return producto.getId();
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -76,10 +76,10 @@ public class ProductoResources {
     // Devuelve el número de filas insertado (será 1 si es actualizado)
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Integer updateProducto(Producto prod){
+    public Integer updateProducto(Producto producto){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.updateProducto(prod);
+            return prodServ.updateProducto(producto);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -89,10 +89,10 @@ public class ProductoResources {
     // Devuelve el número de filas borrado (será 1 si es borrado)
     @DELETE
     @Path("/{idProd}")
-    public Integer deleteProducto(@PathParam("idProd") String idProd){
+    public Integer deleteProducto(@PathParam("idProd") String idProducto){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.deleteProducto(idProd);
+            return prodServ.deleteProducto(idProducto);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -102,10 +102,10 @@ public class ProductoResources {
     @PUT
     @Path("/{id_producto}/inc/{cantidad}")
    
-    public Integer incrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cantidad){
+    public Integer incrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.incrementa(id_producto, cantidad);
+            return prodServ.incrementa(id_producto, cant);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
@@ -118,10 +118,10 @@ public class ProductoResources {
     @PUT
     @Path("/{id_producto}/dec/{cantidad}")
    
-    public Integer decrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cantidad){
+    public Integer decrementaProducto(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.decrementa(id_producto, cantidad);
+            return prodServ.decrementa(id_producto, cant);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
