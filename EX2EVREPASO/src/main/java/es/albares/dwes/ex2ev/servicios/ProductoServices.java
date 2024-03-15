@@ -171,7 +171,7 @@ public class ProductoServices {
      * @return la lista de productos
      */
     public Collection<Producto> getProductosEnStock() {
-        String consulta = "SELECT distinct p from Producto join fetch p.existencias"
+        String consulta = "SELECT distinct p from Producto join fetch p.existencias "
                 + "WHERE p.existencias.cantidad > 0";
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         List<Producto> lstProd = entityManager

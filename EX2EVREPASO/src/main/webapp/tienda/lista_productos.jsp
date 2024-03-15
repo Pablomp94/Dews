@@ -19,7 +19,7 @@
             <select id="selCategoria" name="categoria">
                 <option value=""></option>
                 <c:forEach items="${listaCategorias}" var="categoria">
-                <option value"${categoria.codigo}">${categoria.nombre}</option>
+                <option value="${categoria.codigo}">${categoria.nombre}</option>
                 </c:forEach>
             </select>
             <input type="checkbox" name="stock" value="S" aria-label="Solo productos en existencias">&nbsp;Stock
