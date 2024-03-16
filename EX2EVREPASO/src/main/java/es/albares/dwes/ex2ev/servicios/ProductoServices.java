@@ -217,11 +217,14 @@ public class ProductoServices {
         }
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         try {
+            
+            entityManager.getTransaction().begin(); // Iniciar transacción
+            
             Producto prod = entityManager.find(Producto.class, idProd);
 
-            /*if (prod == null) {
+            if (prod == null) {
                 return -1;
-            }*/
+            }
 
             ProductoExistencias prodExist = prod.getExistencias();
 
@@ -273,6 +276,9 @@ public class ProductoServices {
         }
         EntityManager entityManager = GestorEntityManager.getEntityManager();
         try {
+            
+            entityManager.getTransaction().begin(); // Iniciar transacción
+            
             ProductoExistencias prodExist = entityManager.find(ProductoExistencias.class, idProd);
 
             if (prodExist == null) {
