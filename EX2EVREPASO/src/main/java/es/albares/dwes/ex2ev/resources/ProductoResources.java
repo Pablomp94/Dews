@@ -101,11 +101,10 @@ public class ProductoResources {
     
     @PUT
     @Path("/{id_producto}/inc/{cantidad}")
-   
-    public Integer  incrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
+    public Integer  incrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cantidad){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.incrementa(id_producto, cant);
+            return prodServ.incrementa(id_producto, cantidad);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
             return -1;
@@ -117,11 +116,10 @@ public class ProductoResources {
     
     @PUT
     @Path("/{id_producto}/dec/{cantidad}")
-   
-    public Integer decrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cant){
+    public Integer decrementa(@PathParam("id_producto") String id_producto,@PathParam("cantidad") int cantidad){
         ProductoServices prodServ = CDI.current().select(ProductoServices.class).get();
         try {
-            return prodServ.decrementa(id_producto, cant);
+            return prodServ.decrementa(id_producto, cantidad);
         } catch (Exception ex) {
             Logger.getLogger(ProductoResources.class.getName()).log(Level.SEVERE, null, ex);
             return -1;

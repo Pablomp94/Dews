@@ -207,7 +207,7 @@ public class ProductoServices {
      * incrementarlo en "cantidad"
      *
      * @param idProd
-     * @param cantidad
+     * @param cant
      * @return numero de existencias del producto o -1 si no hay productos
      */
     public int incrementa(String idProd, int cant) {
