@@ -219,9 +219,9 @@ public class ProductoServices {
         try {
             Producto prod = entityManager.find(Producto.class, idProd);
 
-            if (prod == null) {
+            /*if (prod == null) {
                 return -1;
-            }
+            }*/
 
             ProductoExistencias prodExist = prod.getExistencias();
 
@@ -263,7 +263,7 @@ public class ProductoServices {
      * negativos
      *
      * @param idProd
-     * @param cantidad
+     * @param cant
      * @return numero de existencias del producto o -1 si no hay productos
      */
     public int decrementa(String idProd, int cant) {
